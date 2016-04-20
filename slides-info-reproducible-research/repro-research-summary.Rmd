@@ -1,10 +1,8 @@
 ---
 title: "Reproducible Research in Knight BSR"
 author: "Jessica Minnier"
-date: "January 2, 2016"
-output:
-  ioslides_presentation:
-    smaller: yes
+date: "April 20, 2016"
+output: slidy_presentation
 bibliography: minnier_bibliography.bib
 ---
 
@@ -20,7 +18,11 @@ An article about computational science in a scientific publication is not the sc
 
 ## Schwab, Karrenbach, Claerbout:
 
-It takes some effort to organize your research to be reproducible. We found that although the effort seems to be directed to helping other people stand up on your shoulders, the principal beneficiary is generally the author herself. This is because time turns each one of us into another person, and by making effort to communicate with strangers, we help ourselves to communicate with our future selves.
+It takes some effort to organize your research to be reproducible.
+
+We found that although the effort seems to be directed to helping other people stand up on your shoulders, the principal beneficiary is generally the author herself.
+
+This is because time turns each one of us into another person, and by making effort to communicate with strangers, we help ourselves to communicate with our *future selves*.
 
 [@schwab2000making]
 
@@ -33,10 +35,17 @@ In @ioannidis2014make "How to Make More Published Research True" in PLOS Medicin
 
 "To make more published research true, practices that have improved credibility
 and efficiency in specific fields may be transplanted to others which would
-benefit from them—possibilities include the adoption of large-scale collaborative
-research; *replication culture*; registration; sharing; *reproducibility
-practices*; better statistical methods; standardization of definitions and analyses;
-more appropriate (usually more stringent) statistical thresholds; and improvement
+benefit from them—possibilities include
+
+- the adoption of large-scale collaborative
+research;
+- *replication culture*;
+- registration; sharing; *reproducibility
+practices*;
+- better statistical methods;
+- standardization of definitions and analyses;
+- more appropriate (usually more stringent) statistical thresholds; and
+- improvement
 in study design standards, peer review, *reporting and dissemination of
 research*, and training of the scientific workforce."
 
@@ -335,6 +344,7 @@ StackOverflow question "Why should I use version control?" <http://stackoverflow
 ## References and Resources (websites, more)
 
 Karl Broman's class "Tools for Reproducible Research" resource page <http://kbroman.org/Tools4RR/pages/resources.html>
+and "Why Reproducibility is Hard"<https://kbroman.wordpress.com/2015/09/09/reproducibility-is-hard/>
 
 CRAN's task view on Reproducible Research: <https://cran.r-project.org/web/views/ReproducibleResearch.html>
 
