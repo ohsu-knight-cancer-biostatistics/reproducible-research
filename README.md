@@ -9,4 +9,4 @@ A .Rmd file that generated a slide deck on reproducible research can be found at
 
 [slides-info-reproducible-research/repro-research-summary.Rmd](slides-info-reproducible-research/repro-research-summary.Rmd)
 
-This was initially presented at a meeting for BSR members on April 20, 2016. It will be continuously updated and more lessons will be added to this repository.
+This was initially presented at a meeting for BSR members on April 20, 2016. It will be continually updated and more lessons will be added to this repository.
