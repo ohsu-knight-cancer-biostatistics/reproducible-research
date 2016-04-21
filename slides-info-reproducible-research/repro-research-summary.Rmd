@@ -133,6 +133,9 @@ NIH Training Module: <https://grants.nih.gov/reproducibility/module_1/presentati
 
 NIH held a joint workshop in June 2014 with the Nature Publishing Group and Science on the issue of reproducibility and rigor of research findings
 
+A video/slide presentation about this topic can be found here:
+<http://grants.nih.gov/grants/policy/rigor/NIH_Policy_Rigor_For_Reviewers/presentation.html>
+
 ## NIH Principles and Guidelines for Reporting Preclinical Research
 
 - aim of facilitating the interpretation and repetition of experiments as they have been conducted in the published study
