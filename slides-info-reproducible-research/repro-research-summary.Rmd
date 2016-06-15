@@ -1,11 +1,11 @@
 ---
-title: Reproducible Research in Statistics
+title: "Reproducible Research in Statistics"
 author: "Jessica Minnier -- Knight BSR"
-date: June 16, 2016
+date: "June 16, 2016"
 output:
   slidy_presentation:
     theme: cerulean
-footer: "Knight BSR + CRAB Retreat: Reproducible Research"
+footer: 'Knight BSR + CRAB Retreat: Reproducible Research'
 bibliography: minnier_bibliography.bib
 ---
 
