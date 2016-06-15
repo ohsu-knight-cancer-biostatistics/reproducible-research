@@ -16,5 +16,5 @@ Html slides:
 
 ### History
 
-- June 16, 2016. An updated version of presentation slides was presented by J Minnier at the BSR+CRAB retreat in Seattle. [Rpubs link](http://rpubs.com/minnier/repro-bsr)
-- April 20, 2016. Presentation slides were initially presented by J Minnier at the weekly meeting for BSR members. [Rpubs link](http://rpubs.com/minnier/repro-bsr-2016-06)
+- June 16, 2016. An updated version of presentation slides was presented by J Minnier at the BSR+CRAB retreat in Seattle. [Rpubs link](http://rpubs.com/minnier/repro-bsr-2016-06)
+- April 20, 2016. Presentation slides were initially presented by J Minnier at the weekly meeting for BSR members. [Rpubs link](http://rpubs.com/minnier/repro-bsr)
