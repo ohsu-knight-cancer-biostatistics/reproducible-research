@@ -1,0 +1,96 @@
+---
+title: "Intro to R Markdown"
+author: "Jessica Minnier"
+date: "August 9, 2016"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Template
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# R Markdown - what is it?
+
+R Markdown is just Markdown + R code. It is a formatting syntax.
+
+knitr converts R Markdown (runs the code) --> Markdown --> html
+
+# Knitr in a knutshell - Karl Broman
+
+[Some of this is from K Broman's knitr tutorial.](http://kbroman.org/knitr_knutshell/pages/Rmarkdown.html)
+
+## Chunks
+
+```{r chunk_name, echo=TRUE}
+x <- rnorm(100)
+y <- 2*x + rnorm(100)
+cor(x, y)
+```
+
+## Inline code
+
+Here we can have R code in line such as:
+
+We have `r length(1:3)` items. Also `x[1]` = `r round(x[1],2)`.
+
+Never hard code a result or summary statistic again!
+
+## Chunk Options
+
+```
+echo=FALSE        Don't include the code
+results="hide"    Don't include the output 
+include=FALSE     Don't show code or output
+eval=FALSE        Don't evaluate the code at all
+warning=FALSE     Don't show R warnings
+message=FALSE     Don't show R messages 
+fig.width=#       Width of figure
+fig.height=#      Height of figure
+fig.path="Figs/"  Path for figure files
+```
+
+## Global chunk options
+
+```{r global_options}
+knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
+                      echo=FALSE, warning=FALSE, message=FALSE)
+```
+
+## Knitr compiles to .md
+
+To compile me, run this in R:
+
+    library(knitr)
+    knit('intro-rmarkdown.Rmd')
+    
+
+## conclusion (via Yihui Xie:)
+
+Nothing fancy. You are ready to go. When you become picky, go to the [knitr website](http://yihui.name/knitr/).
+
+![knitr logo](http://yihui.name/knitr/images/knit-logo.png)
