@@ -1,13 +1,6 @@
----
-title: "Reproducible Research in Statistics"
-author: "Jessica Minnier -- Knight BSR"
-date: "June 16, 2016"
-output:
-  slidy_presentation:
-    theme: cerulean
-footer: 'Knight BSR + CRAB Retreat: Reproducible Research'
-bibliography: minnier_bibliography.bib
----
+# Reproducible Research in Statistics
+Jessica Minnier -- Knight BSR  
+June 16, 2016  
 
 # What is Reproducible Research?
 
@@ -245,13 +238,16 @@ Examples: [knitr](http://yihui.name/knitr/) (for R), Sweave; [SASweave](http://h
 
 This is knitr (presentation made with knitr+RStudio):
 
-```{r, message=FALSE, warning=FALSE}
+
+```r
 library(survival)
 leukemia.surv <- survfit(Surv(time, status) ~ x, data = aml) 
 plot(leukemia.surv, lty = 2:3) 
 legend(100, .9, c("Maintenance", "No Maintenance"), lty = 2:3) 
 title("Kaplan-Meier Curves\nfor AML Maintenance Study")
 ```
+
+![](repro-research-summary_files/figure-slidy/unnamed-chunk-1-1.png)<!-- -->
 
 
 
