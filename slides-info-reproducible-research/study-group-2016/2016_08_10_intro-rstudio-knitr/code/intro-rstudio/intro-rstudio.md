@@ -1,0 +1,158 @@
+# Intro to RStudio
+Jessica Minnier  
+August 9, 2016  
+
+
+
+# Rstudio tips
+
+Run a line or run the whole document.
+
+## Keyboard shortcuts
+
+Run a line:
+```
+ctrl-enter
+cmd-enter
+```
+
+Search all files in a directory:
+```
+ctrl-shift-f
+cmd-shift-f
+```
+
+[Here are some others](https://github.com/SISBID/Module1/blob/gh-pages/labs/rstudio-tour.md)
+
+  * `Ctrl + L` = clear commands
+  * `Ctrl + 2` = move cursor to console
+  * `Ctrl + 1` = move cursor to script page
+
+## Code autocompletion and help
+
+tab inside parentheses:
+
+
+```r
+library(ggplot2)
+ggplot()
+```
+
+
+## File path autocompletion
+
+
+```r
+try(source(""))
+```
+
+## [Navigating code](https://support.rstudio.com/hc/en-us/articles/200710523-Navigating-Code)
+
+Go to file/function (in toolbar) and search "myprint" or "examplecode" and "add_num"
+
+
+```r
+myprint <- function(i) print(i)
+```
+
+Navigate with tables of contents within file (see below file, or top right)
+
+Code folding
+
+
+```r
+myfun <- function(a,b,c) {
+  print(a)
+  d = a*b
+  print(d)
+}
+```
+
+## Installing packages is easy
+
+Tools --> install packages
+
+
+## Foldable regions
+
+You can fold sections of your code within an R script.
+
+
+```r
+## fold this -------------------
+
+### or this =======================
+```
+
+## Insert sections
+
+code--> insert section (with .R file) cmd-shift-i
+code--> insert chunk (with .Rmd file) cmd-alt-i
+
+
+
+## [Code snippets](https://support.rstudio.com/hc/en-us/articles/204463668-Code-Snippets)
+
+
+press tab after these:
+
+
+```r
+appl
+
+ts
+```
+
+## Addins
+
+
+```r
+install.packages("addinslist")
+```
+
+## View Data Sets
+
+
+```r
+View(mtcars)
+```
+
+## Debugging + [Code Diagnostics](https://support.rstudio.com/hc/en-us/articles/205753617-Code-Diagnostics)
+
+Rstudio --> preferences --> Code --> debugging -->
+check all boxes
+
+R studio can debug some of your code in real time, also has other debugging tools built in,
+such as `browser()`.
+
+[A longer tutorial is here](https://support.rstudio.com/hc/en-us/articles/205612627-Debugging-with-RStudio)
+
+## Start a shell
+
+Tools -> Shell
+
+
+## New features with every release
+
+Currently in the "preview" release is built in [profiling](https://support.rstudio.com/hc/en-us/articles/218221837-Profiling-with-RStudio) (determining the time each part of code takes to run)
+
+## [Customizing Rstudio](https://support.rstudio.com/hc/en-us/articles/200549016-Customizing-RStudio)
+
+# Reproducibility
+
+- Avoid using mouse to do anything
+- Avoid saving workspace or `Rdata` files, just rerun scripts
+- Good idea to clear workspace in the beginning of files
+
+
+```r
+rm(list=ls())
+```
+
+- Use relative file paths
+
+```r
+mydata = read.table("../data/myfile.csv")
+```
+
+
