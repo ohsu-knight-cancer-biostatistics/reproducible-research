@@ -67,6 +67,7 @@ This is a code chunk with name and chunk options:
 
 ## Features of Knitr (IRRR1)
 
+- inline code evaluation (never hard code a result or summary statistic again!)
 - code highlighting
 - graphics rendering
     + figure files also can be saved as separate files (chunk option `fig.keep='all'`)
