@@ -8,6 +8,7 @@
 x = rnorm(100)
 # regular R comment, within my code chunk
 plot(x)
+hist(x)
 
 #' This is the end of the report. Now click "Compile Notebook"
 #' button in Rstudio. Or use `spin()` function

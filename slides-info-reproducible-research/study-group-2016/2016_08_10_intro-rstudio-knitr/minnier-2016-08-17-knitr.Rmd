@@ -44,7 +44,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Three parts:
 
-- parser: finds the code in your document based on special patterns of text (such as code that starts with ```{r} and ends with ``` )
+- parser: finds the code in your document based on special patterns of text (such as code that starts with ``````{r}``` and ends with ``` ``` ``` )
 - evaluator: evaluates the R code (or other type of code), returns a list of output (including errors, messages, normal output)
     + Note we can turn some of this off using **code chunk options**
 - renderer: renders the text, code, output (or a subset of those if we choose) as .md+.html code (or .docx, or .tex+.pdf)
