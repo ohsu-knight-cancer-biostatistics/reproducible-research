@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 - This week:
     + 3.3 -- using *knitr* and *r markdown*: the basics
 
-## [IRRR1](https://books.google.com/books?id=WVTSBQAAQBAJ&pg=PA3&source=gbs_toc_r&cad=4#v=onepage&q&f=false) knitr: A comprehensive tool for reproducible research in R – Yihui Xie
+## [IRRR1](https://books.google.com/books?id=WVTSBQAAQBAJ&pg=PA3&source=gbs_toc_r&cad=4#v=onepage&q&f=false) knitr: A comprehensive tool for reproducible research in R - Yihui Xie
 
 - A short version of Yihui’s book *Dynamic Documents with R and Knitr*
 - [Knitr website](http://yihui.name/knitr/)
@@ -28,9 +28,9 @@ knitr::opts_chunk$set(echo = TRUE)
     + built upon previous tools (WEB, Noweb, Sweave)
     + framework redesigned to allow for easy and fine control of many aspects of a report
     + Sweave is a subset of knitr in terms of features
-- Main design philosophy: “make reproducible research easier and more enjoyable than the common practice of cut-and-paste results”
+- Main design philosophy: "make reproducible research easier and more enjoyable than the common practice of cut-and-paste results"
 
-## Knitr – R Markdown (Rmd)
+## Knitr - R Markdown (Rmd)
 
 - Rmd is one of the documents that knitr supports (and simplest).
 - If we have a .Rmd file with code and text, we can use the `knit` command to run the R code and convert the document to html:
