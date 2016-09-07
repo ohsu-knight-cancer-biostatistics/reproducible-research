@@ -1,0 +1,267 @@
+---
+title: "RRR3 Intro to Knitr; IRRR1 Knitr"
+author: "Jessica Minnier, BSR Reproducible Research Journal Club"
+date: "August 17, 2016"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## [RRRR3](https://englianhu.files.wordpress.com/2016/01/reproducible-research-with-r-and-studio-2nd-edition.pdf). Getting Started with R, Rstudio, and **knitr**
+
+- Last week:
+    + 3.1 -- using R: the basics
+    + 3.2 -- using RStudio (questions?)
+- This week:
+    + 3.3 -- using *knitr* and *r markdown*: the basics
+
+## [IRRR1](https://books.google.com/books?id=WVTSBQAAQBAJ&pg=PA3&source=gbs_toc_r&cad=4#v=onepage&q&f=false) knitr: A comprehensive tool for reproducible research in R - Yihui Xie
+
+- A short version of Yihui’s book *Dynamic Documents with R and Knitr*
+- [Knitr website](http://yihui.name/knitr/)
+- [FAQ's here](https://github.com/yihui/knitr/blob/master/FAQ.md)
+- [Watch his 5 minute intro video](http://www.screenr.com/qcv8)
+- From a computer science perspective
+- Knitr package in R
+    + built upon previous tools (WEB, Noweb, Sweave)
+    + framework redesigned to allow for easy and fine control of many aspects of a report
+    + Sweave is a subset of knitr in terms of features
+- Main design philosophy: "make reproducible research easier and more enjoyable than the common practice of cut-and-paste results"
+
+## Knitr - R Markdown (Rmd)
+
+- Rmd is one of the documents that knitr supports (and simplest).
+- If we have a .Rmd file with code and text, we can use the `knit` command to run the R code and convert the document to html:
+```
+  library(knitr)
+  knit("myfile.Rmd")
+```
+- or we can use the "Knit HTML" button in Rstudio which uses the `knitr` package to do the same thing.
+
+## Behind the scenes of Knitr (IRRR1)
+
+Three parts:
+
+- parser: finds the code in your document based on special patterns of text (such as code that starts with ``````{r}``` and ends with ``` ``` ``` )
+- evaluator: evaluates the R code (or other type of code), returns a list of output (including errors, messages, normal output)
+    + Note we can turn some of this off using **code chunk options**
+- renderer: renders the text, code, output (or a subset of those if we choose) as .md+.html code (or .docx, or .tex+.pdf)
+
+## Code Chunks
+
+This is a code chunk with no name, no options, but it will run:
+
+    ```{r}`r ''`
+    x = rnorm(100)
+    plot(x)
+    ```
+
+This is a code chunk with name and chunk options:
+
+    ```{r normaloutput, fig.width=5, echo=FALSE}`r ''`
+    x = rnorm(100)
+    plot(x)
+    ```
+
+## Features of Knitr (IRRR1)
+
+- inline code evaluation (never hard code a result or summary statistic again!)
+- code highlighting
+- graphics rendering
+    + figure files also can be saved as separate files (chunk option `fig.keep='all'`)
+    + animations: `fig.show='animate'`
+    + figure specifications: `fig.width` and `fig.height` for example
+- cache: `cache=TRUE`
+    + for slow code, can save the output objects from a chunk of code in the "cache"
+    + directly loads results from a previous run
+    + if you change the code in a cached chunk, the code is rerun and resaved
+    + be careful with caching, don't load packages or set knitr options, see details on [knitr website](http://yihui.name/knitr/demo/cache/)
+- chunk hooks (see 1.4.1)
+- other languages supported (python, C++, bash, etc)
+
+
+## YAML
+
+```
+---
+title: "Habits"
+author: "Jane Doe"
+output:
+  html_document:
+    theme: united
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    code_folding: hide
+---
+```
+
+- The header of your R Markdown document has the title options
+- See [description of the many options](http://rmarkdown.rstudio.com/html_document_format.html)
+- Add table of contents `toc`, change theme appearance `theme` or with custom CSS files,
+include other code in header (i.e. latex code or html code), figure options with `fig_width` and `fig_height`
+- Can change some with "Output options" button next to "Knit HTML" button in Rstudio
+
+## Code chunk options
+
+- code options are like function options (i.e. `eval=FALSE`)
+- if you've defined a TRUE/FALSE variable called `dothis` earlier in the document, 
+you can even use `eval=dothis`
+- See [description of the many, *many* options](http://yihui.name/knitr/options/)
+- must be one line (no line breaks)
+- avoid spaces `' '` and periods `.` in chunk labels and directory names
+
+An example:
+
+    ```{r eval=TRUE, fig.width=5, echo=FALSE} `r ''`
+    x = rnorm(100)
+    plot(x)
+    ```
+Also set global cunk options in the beginning
+
+    ```{r setup, include=FALSE} `r ''`
+    knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
+                      echo=FALSE, warning=FALSE, message=FALSE)
+    ```
+
+## [Code chunk options examples](http://yihui.name/knitr/options/#chunk_options)
+
+Common:
+```
+echo=FALSE        Don't include the code
+results="hide"    Don't include the output 
+include=FALSE     Don't show code or output
+eval=FALSE        Don't evaluate the code at all
+warning=FALSE     Don't show R warnings
+message=FALSE     Don't show R messages 
+fig.width=#       Width of figure
+fig.height=#      Height of figure
+fig.path="Figs/"  Path for figure files
+```
+
+Advanced:
+```
+cache=TRUE        Cache code chunk
+results="asis"    Use with pandoc.table or other html generating code
+tidy=TRUE         Tidy up your code output
+fig.show="hide"   Generate plot files but hide them in report
+dev="png"         Change file type of figure/plot
+```
+
+## Extract R code (`purl()`)
+
+You can extract all R code from your knitr document into an R file, with or without documentation.
+
+```{r purlthis, eval=FALSE}
+library(knitr)
+setwd("slides-info-reproducible-research/study-group-2016/2016_08_10_intro-rstudio-knitr/")
+purl("minnier-2016-08-17-knitr.Rmd", output="minnier-2016-08-17-knitr-no-doc.R")
+purl("minnier-2016-08-17-knitr.Rmd",
+     output="minnier-2016-08-17-knitr-with-doc.R",
+     documentation = 2)
+```
+
+(Since all the code in this file has `eval=FALSE` the R code is commented out. Try with a regular .Rmd file to see what evaluated code looks like.)
+
+## R Notebooks (`spin()`)
+
+- .R file with pure code (no chunks) but with specially formatted comments that are then
+parsed and compiled inito a report similar to knitr.
+
+```
+#' # This is a header
+#' 
+#' I can write comments like this that will be turned into
+#' markdown text.
+
+#+ chunkname, fig.width=10
+x = rnorm(100)
+# regular R comment, within my code chunk
+plot(x)
+
+#' This is the end of the report. Now click "Compile Notebook"
+#' button in Rstudio. Or use `spin()` function
+#' in knitr package, and we will have a weaved html document! 
+#' Not as pretty as regular .Rmd+knitr but we can add
+#' many options to make it just as nice, even YAML!
+#'
+```
+
+You can compile this in Rstudio (notebook button) or R with the function `spin()`:
+```{r eval=FALSE, echo=TRUE}
+library(knitr)
+spin("example_notebook_code.R")
+```
+
+## R and `knitr`
+
+Instead of using Rstudio's built in buttons, we can perform all the same tasks in pure
+R code.
+
+To knit a .Rmd file to .md and then convert to .html we can use the code:
+```{r eval=FALSE, echo=TRUE}
+setwd("~/Documents/") # change working directory to directory with .Rmd file
+knit(input = "Example.Rmd", output = "Example.md") # .Rmd to .md
+mardownToHTML(file = "Example.md", output = "Example.html") #.md to .html
+```
+
+or, in one line:
+```{r eval=FALSE, echo=TRUE}
+knit2html(file = "~/Documents/Example.Rmd", output = "~/Documents/Example.html")
+```
+
+## R and `rmarkdown`
+
+If we have a markdown file with YAML heading specifying the type of output and options, we can also use
+the `rmarkdown` package in R:
+
+```{r eval=FALSE, echo=TRUE}
+render(file = "~/Documents/Example.Rmd")
+```
+
+we can even render multiple types of files from the same document:
+```{r eval=FALSE, echo=TRUE}
+render("Example.Rmd", c("pdf_document", "html_document"))
+```
+
+
+## Now let's see an example!
+
+0. [Install git](https://git-scm.com/downloads)
+1. File --> New Project --> Version Control --> Git
+2. Repository URL:
+https://github.com/jminnier/DataSharingPolicies.git
+3. Project Directory Name: `WhateverYouWant`
+4. Create project as subdirectory of: `SomewhereOnYourComputer/`
+5. X Open in new session
+6. **Create Project**
+7. Open `analysis-code/analysis-datasharing.Rmd`
+8. Knit away!
+9. Also try running `render-analysis-report.R`
+
+**What does this code do?**
+```{r library, eval=FALSE}
+source("render-analysis-report.R")
+
+setwd("analysis-code")
+purl("analysis-datasharing.Rmd", output = "mycode.R")
+purl("analysis-datasharing.Rmd", output = "mycode-withdoc.R", documentation = 2)
+
+knitr::knit2html("analysis-data-sharing.Rmd", output = "myoutput.html")
+
+rmarkdown::render("analysis-datasharing.Rmd",
+                  output_format = c("html_document", "pdf_document"),
+                  params = list(showcode=TRUE))
+```
+
+
+## Rmd Reference Guides
+
+
+- [Longer Reference Guide](http://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
+- [Cheatsheet](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+
+
+

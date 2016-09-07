@@ -34,3 +34,4 @@ The slides and other information are in the folder: [slides-info=reproducible-re
 - June 16, 2016. An updated version of presentation slides was presented by J Minnier at the BSR+CRAB retreat in Seattle. [Rpubs link](http://rpubs.com/minnier/repro-bsr-2016-06)
 - April 20, 2016. Presentation slides were initially presented by J Minnier at the weekly meeting for BSR members. [Rpubs link](http://rpubs.com/minnier/repro-bsr)
 - August 16, 2016. Some BSR Study Group slides are added, folders rearranged.
+- September 7, 2016. More BSR Study Group slides and handouts added.
