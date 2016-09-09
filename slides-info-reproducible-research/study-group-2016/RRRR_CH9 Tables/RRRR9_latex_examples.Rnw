@@ -1,0 +1,67 @@
+
+\documentclass{article}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+
+\begin{tabular}{l | c c}
+  \hline
+  Observation & Variable1 & Variable2 \\
+  \hline \hline
+  Subject1 & a & b \\
+  Subject2 & c & d \\
+  Subject3 & e & f \\
+  Subject4 & g & h \\
+  \hline
+\end{tabular}
+
+
+\begin{table}[t]
+    \caption{Example Simple LaTeX Table}
+    \label{ExLaTeXTable}
+    \begin{center}
+      \begin{tabular}{l | c c}
+        \hline
+        Observation & Variable1 & Variable2 \\
+        \hline \hline
+        Subject1 & a & b \\
+        Subject2 & c & d \\
+        Subject3 & e & f \\
+        Subject4 & g & h \\
+        \hline
+      \end{tabular}
+    \end{center}
+\end{table}
+
+
+<<results=tex, echo=FALSE>>=
+# Load xtable
+M1 <- lm(Examination ~ Education, data = swiss)
+library(xtable)
+# Create LaTeX table from M1 and show the output markup
+xtable(M1, caption = "Linear Regression, Dependent Variable: Exam Score", label = "BasicXtableSummary", digits = 1)
+@
+
+
+<<results=tex,echo=FALSE>>=
+# Estimated nested regression models
+M1 <- lm(Examination ~ Education, data = swiss)
+M2 <- lm(Examination ~ Education + Agriculture, data = swiss)
+M3 <- lm(Examination ~ Education + Agriculture + Catholic, data = swiss)
+M4 <- lm(Examination ~ Education + Agriculture + Catholic + Infant.Mortality, data = swiss)
+M5 <- lm(Examination ~ Education + Agriculture + Catholic + Infant.Mortality + Fertility, data = swiss)
+# Load texreg package
+library(texreg)
+# Create custom coefficient names
+cust_coef <- c('(Intercept)', 'Education', 'Agriculture', 'Catholic', 'Infant Mortality','Fertility')
+# Create nested regression model table
+texreg(list(M1, M2, M3, M4, M5),
+      caption = 'Nested Estimates Table with \\emph{texreg}',
+      caption.above = TRUE,
+      label = 'Basic_texregTable',
+      custom.coef.names = cust_coef)
+@
+
+
+\end{document}
