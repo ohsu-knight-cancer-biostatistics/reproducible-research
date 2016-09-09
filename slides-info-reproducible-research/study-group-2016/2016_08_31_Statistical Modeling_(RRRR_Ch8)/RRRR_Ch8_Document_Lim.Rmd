@@ -1,0 +1,226 @@
+---
+title: "RRRR 8. Statistical Modeling and Knitr"
+author: "Jeong Lim"
+date: "August 31, 2016"
+output: html_document
+---
+
+
+## Introduction 
+Focus on how to make your analysis really reproducible
+
+- Incorporating analyses into the Markup : `chunk` options
+- Computationally intensive code: chunk option `cache`
+- Including non-R code in code chunks (ex. SAS code)
+    
+    
+## Code Chunks
+ 
+ 
+    ```{r}`r ''`
+    
+    ```
+
+ Code chunk with option
+
+    ```{r NAME, OPTIONS HERE}`r ''`
+    
+    ```
+    
+ Global option
+
+    ```{r,  include=FALSE }`r ''`
+    knitr::opts_chunk$set(OPTIONS HERE)
+    ```
+
+## [Chunk options](http://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
+
+
+```
+echo=FALSE        Don't include the code
+results="hide"    Don't include the output 
+include=FALSE     Don't show code or output
+eval=FALSE        Don't evaluate the code at all
+
+collapse=TRUE     Collapse all the source and ouput blocks into a single block    
+warning=FALSE     Don't show R warnings
+message=FALSE     Don't show R messages 
+error=FALSE       Don't show R error 
+cache=TRUE        Cache code chunk
+tidy=TRUE         Reformat code in a tidy way
+comment=NA        Remove ## 
+
+```
+
+
+## Chunk options example 
+- numeric vector to select source code ;  e.g) `echo=1`, `echo=c(1,3)`, `echo=-(1:2)`
+
+code chunk without option
+      
+    ```{r withoutoption}`r ''`
+    cars[1:4,]
+    sum(cars$speed)
+    sum(cars$dist)
+    mean(cars)
+    plot(cars$speed, cars$dist)
+    ``` 
+It looks like 
+
+```{r withoutoption}
+cars[1:4,]
+sum(cars$speed)
+sum(cars$dist)
+mean(cars)
+plot(cars$speed, cars$dist)
+```
+  
+code chunk with options
+  
+    ```{r withoption, echo=2:3,  warning=FALSE, collapse=TRUE, comment=NA, fig.align='center', fig.width=4} `r ''`
+    cars[1:4,]
+    sum(cars$speed)
+    sum(cars$dist)
+    mean(cars)
+    plot(cars$speed, cars$dist)
+    ```
+
+It looks like 
+  
+```{r withoption, echo=2:3,  warning=FALSE, collapse=TRUE, comment=NA, fig.align='center', fig.width=4} 
+cars[1:4,]
+  sum(cars$speed)
+sum(cars$dist)
+mean(cars)
+plot(cars$speed, cars$dist)
+```
+
+
+
+## [Chunk options example:` tidy`](http://yihui.name/formatR/)
+
+- `tidy_source()` function in the formatR package make code tidy to improve readability 
+
+    +  long lines of code and comments are reorganized into appropriately shorter ones
+    +  spaces and indent are added where necessary
+    +  comments are preserved in most cases
+    +  the number of spaces to indent the code (i.e. tab width) can be specified (default is 4)
+    +  an else statement in a separate line without the leading } will be moved one line back
+    +  = as an assignment operator can be replaced with <-
+    +  the left brace { can be moved to a new line
+
+
+
+```{r}
+library(formatR)
+source("C:/Users/limje/Desktop/Reproducible/Jeong/UglyScript.R")
+tidy_source("UglyScript.R", file="BeautifulScript.R")
+```
+
+
+
+
+## Showing code & result inline
+
+-  Inline static code : single backticks
+         
+  ex) This is example R code : ` MeanRiver <- mean(rivers) `
+  
+     
+-  Inline dynamic code : r after the first single backtick 
+
+
+  ex) The mean length of 141 major rivers in North America is `r round(mean(rivers), digits=0)`
+     
+     
+
+## Dynamically including Modular Analysis files
+-  Long R source code chunks
+-  Same code in muliple documents (eg.article and slide show presentation)
+-  Interested in specific parts of analysis
+
+Source from a local file
+
+```{r, eval=FALSE}
+source("C:/Users/limje/Desktop/Reproducible/Jeong/MainAnalysis.R")
+```
+
+
+Source from a secure URL
+
+```{r,fig.width=4, fig.height=4}
+library(devtools)
+source_url("http://bit.ly/1D5p1w6")
+```
+
+SHA-1 hash is a unique number for the file. If the file changes, its SHA-1 hash will change
+
+
+
+## Computationally intensive analysis: `cache=TRUEE`
+ * knitr will first check if there's previously cached results
+ * `cache.path` : set the cache directory
+ * Only be run when the chunk's contents change or chunk option change
+ 
+ 
+create an object Sample to a file called Sample.RData
+
+       ```{r gen-data, cache=TRUE} `r ''`
+       # create data
+       Sample<-rnorm(n=1000, mean=5, sd=2)
+       # save sample
+       save(Sample, file="Sample.RData")
+       ```
+
+latter code chunk for creating the histogram 
+
+       ```{r histgram, cache=TRUE, dependson='gen-data'}`r ''`
+       # load Sample
+       load(file="Sample.RData")
+       # create histogram
+       hist(Sample)
+       ```
+
+## Running SAS code using chunk option `engine`
+
+      ```{r, engine="sas", engine.path="C:/Program Files/SASHome/SASFoundation/9.4/sas.exe"} `r ''`
+      proc means data=sashelp.class;
+      run;
+      ```
+SAS code and output 
+
+```{r, engine="sas", engine.path="C:/Program Files/SASHome/SASFoundation/9.4/sas.exe", comment=""}
+proc means data=sashelp.class;
+run;
+
+```
+
+
+SAS HTML output (only works with HTML )
+
+```{r, engine="sas", engine.path="C:/Program Files/SASHome/SASFoundation/9.4/sas.exe", echo=FALSE, results='hide'}
+ods noproctitle;
+ods graphics;
+ods html file="sasoutput.html" (no_top_matter no_bottom_matter) style=journal;
+proc means data=sashelp.class;
+run;
+```
+
+```{r, child="sasoutput.html", echo=FALSE}
+```
+
+
+
+
+## Reproducibly Random : 'set.seed'
+```{r, fig.width=4, fig.height=4}
+set.seed(123)
+Draw1<-rnorm(1000, mean=0, sd=2)
+summary(Draw1)
+hist(Draw1)
+
+set.seed(125)
+Draw2<-rnorm(1000, mean=0, sd=2)
+summary(Draw2)
+hist(Draw2)
+```

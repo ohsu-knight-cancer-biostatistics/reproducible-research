@@ -1,0 +1,375 @@
+---
+title: "RRRR 9. Showing Results with Tables"
+author: "Solange Mongoue"
+date: "September 7, 2016"
+output: slidy_presentation
+---
+
+
+## Outline 
+Learn how to dynamically connect statistical results with tables in your presentation documents written in LaTeX and Markdown 
+
+Focus on three tools in this chapter:  
+
+- `kable` function from *knitr*   
+  creates documents from data frames for both LaTeX and Markdown/HTML documents  
+- the *xtable* package  
+  does the same but much more customizable  
+- the *texreg* package  
+  procuces publication-quality tables. can combine results from multiple models into one table  
+    
+    
+## Basic knitr Syntax for Tables
+
+`results` option is the most important chunk option  
+
+4 values  
+
+- `hide` hides results of your code chunk  
+- `asis` includes table created from R objects. writes raw markup form of the table into the presentation document  
+- `markup` uses output hook to mark up the results in a predefined way  
+- `hold` collects all the output and prints at the end of the chunk  
+
+
+
+## Tables in LaTeX
+
+### The center environment
+
+```
+\begin{center}
+
+  This is a center environment.    
+  
+\end{center}   
+```
+
+### The tabular environment
+
+To begin, type `\begin{tabular}{TABLE_SPEC}`.  
+
+`{TABLE_SPEC}` allows you to specify the number of columns and the text alignment in each column.  
+
+Example: to create a table with three columns, the first is left-justified and the latter two are center-justified, type
+
+```
+\begin{tabular}{l | c c}
+
+```
+
+- If we want to add a vertical line between two columns, we can place a vertical bar `|` between the columns arguments  
+- Columns are delimited with `&`  
+- Use two backslashes to start a new line `\\`  
+- To add horizontal line, use `\hline`  
+- Close the tabular environment with `end{tabular}`
+
+Full laTeX code
+
+```
+\begin{tabular}{l | c c}
+  \hline
+  Observation & Variable1 & Variable2 \\
+  \hline \hline
+  Subject1 & a & b \\
+  Subject2 & c & d \\
+  Subject3 & e & f \\
+  Subject4 & g & h \\
+  \hline
+\end{tabular}
+
+```
+
+
+
+## Tables in LaTeX
+
+### The table float environment
+ 
+ Allows us to separate a table from the text, specify its location and give it a caption.  
+ 
+- To begin use `\begin{table}[POSITION_SPEC]`
+- The `POSITION_SPEC` argument allows us to determine the location of the table  
+    * `h` for here, i.e. where the table is written in the text  
+    * `t` for top of the page  
+    * `b` for bottom of the page  
+- Use the `\caption` command to set a title for the table  
+- Use `\label` command to declare a cross-reference key for the table. To reference the table in the test, simply type `\ref{KEY}`, where `\KEY` is set with the `\label` command  
+- A table environment is closed with `\end{table}`
+ 
+LaTeX code
+ 
+```
+\begin{table}[t]
+    \caption{Example Simple LaTeX Table}
+    \label{ExLaTeXTable}
+    \begin{center}
+      \begin{tabular}{l | c c}
+        \hline
+        Observation & Variable1 & Variable2 \\
+        \hline \hline
+        Subject1 & a & b \\
+        Subject2 & c & d \\
+        Subject3 & e & f \\
+        Subject4 & g & h \\
+        \hline
+      \end{tabular}
+    \end{center}
+\end{table}
+
+```
+
+
+## Tables in Markdown/HTML
+
+### Markdown tables
+
+- Much simpler than laTeX's syntax  
+- No need to declare a new environment, just start typing  
+- Columns are delimited with vertical bars (|). Not necessary to line up the vertical bars  
+- Rows are started with a new line  
+- Specify each column's text justification using colons on the dashed row  
+
+Example: this code will create the left-center-center justified formatted table
+
+``` {r, echo=TRUE, eval=FALSE}
+### Example Simple Markdown Table
+Observation | Variable1 | Variable2
+----------- | --------- | ---------
+Subject1    | a         | b
+Subject2    | c         | d
+Subject3    | e         | f
+Subject4    | g         | c
+```
+
+### Example Simple Markdown Table
+Observation | Variable1 | Variable2
+---------- | ------- | -------
+Subject1    | a         | b
+Subject2    | c         | d
+Subject3    | e         | f
+Subject4    | g         | c
+
+## Tables in Markdown/HTML
+
+### HTML tables
+
+- `textreg` function creates table with HTML syntax 
+- HTML uses **tables** element 'tags' to begin (`<table>`) and end tables (`</table>`) 
+- Not required to tab the content of a table element 
+- Specify element attributes inside start tags i.e. `<table, border="1">` to add a border to a table 
+- Table rows are put inside of `tr` (table rows) element tags 
+- Individual cells are delimited with `td` (standard cell) tags 
+- Delimit a table's header row from its body with the `thead` and `tbody` tags 
+- Table captions can be included with `caption` tags
+
+Example: Recreate the same left-center-center justified formatted table
+
+```
+<table>
+  <thead>
+    <tr>
+        <td>Observation</td> <td>Variable1</td> <td>Variable2</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td>Subject1</td> <td>a</td> <td>b</td>
+    </tr>
+    <tr>
+        <td>Subject2</td> <td>c</td> <td>d</td>
+    </tr>
+    <tr>
+        <td>Subject3</td> <td>e</td> <td>e</td>
+    </tr>
+    <tr>
+        <td>Subject4</td> <td>f</td> <td>f</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+<table>
+<thead>
+<tr>
+<td>Observation</td> <td>Variable1</td> <td>Variable2</td>
+</tr>
+</thead>
+<tbody> <tr>
+<td>Subject1</td> <td>a</td> <td>b</td>
+</tr>
+<tr>
+<td>Subject2</td> <td>c</td> <td>d</td>
+</tr> <tr>
+<td>Subject3</td> <td>e</td> <td>e</td>
+</tr>
+<tr>
+<td>Subject4</td> <td>f</td> <td>f</td>
+</tr>
+</tbody>
+</table>
+
+
+
+## Creating Tables from Supported Class R Objects
+
+Use `kable` funtion, __xtable__ and __texreg__ packages. 
+
+They work easily with specific object classess that their designers explicitly support.
+
+### `kable` for Markdown and LaTeX
+
+Converts matrices and data frames into tables for Markdown, HTML and LaTeX
+```{r include=FALSE}
+library(knitr)
+```
+```{r , results='asis', echo=TRUE}
+kable_ex <- data.frame(
+            Observation = c("Subject1", "Subject2",
+                            "Subject3", "Subject4"),
+            Variable1 = c("a", "c", "e", "g"),
+            Variable2 = c("b", "d", "f", "c")
+)
+kable(kable_ex, caption = "Example kable Table", format = "markdown")
+```
+
+- Can specify new column and row names by passing character vectors to `col.names` and `row.names` 
+- Use `digits` argument to specify the number of digits after the decimal place 
+- Use `format='latex'` to create a LaTeX formatted table 
+
+## Creating Tables from Supported Class R Objects
+
+### `xtable` for LaTeX and HTML 
+
+- *kable* has limited customizability 
+- **xtable** package can create more customizable tables from a wider variety of R objects, including statistical model objects 
+
+Example: `lm` (linear model) command creates model summaries of the `lm` class. Let's create a simple linear regression using the swiss data frame and `lm` command.
+
+```{r, echo=TRUE, comments='##'}
+# Fit simple linear regression model
+M1 <- lm(Examination ~ Education, data = swiss)
+# Show M1 class
+class(M1)
+# Show summary of M1 model object
+summary(M1)
+```
+  
+- To find a full list of object classes that *xtable* supports, type `methods(xtable)' after loading the package  
+
+```{r, results='asis', echo=TRUE}
+library(xtable)
+methods(xtable)
+```
+
+## Creating Tables from Supported Class R Objects
+
+#### `xtable` for LaTeX
+
+Let's create a table summarizing the estimates from the M1 model obsject. 
+The code below will generate the LaTeX syntax.
+
+```{r, echo=TRUE}
+# Load xtable
+library(xtable)
+
+# Create LaTeX table from M1 and show the output markup
+xtable(M1, caption = "Linear Regression,
+        Dependent Variable: Exam Score",
+        label = "BasicXtableSummary",
+        digits = 1)
+
+```
+
+## Creating Tables from Supported Class R Objects
+
+#### `xtable` for Markdown/HTML
+
+- Use *xtable* and the `print.xtable` command to create tables for Markdown and HTML documents
+- We can *xtable* class objects through the print command and add arguments to customize the table format 
+- `type`  can be `htlm` or `latex` 
+
+``` {r, results='asis', echo=TRUE}
+# Load xtable
+library(xtable)
+# Create an xtable object from M1
+M1Table <- xtable(M1, caption = "Linear Regression, Dependent
+                      Variable: Exam Score",
+                      label = "BasicXtableSummary",
+                      digits = 1)
+# Create HTML summary table of M1Table
+print.xtable(M1Table, type = "html", caption.placement = "top")
+```
+
+## Creating Tables from Supported Class R Objects
+
+### `texreg` for LaTeX and HTML
+
+- Creates output tables with estimates from multiple statistical models 
+- Supports more model object types than `xtable` 
+
+``` {r, results='asis'}
+# Estimated nested regression models
+M1 <- lm(Examination ~ Education, data = swiss)
+M2 <- lm(Examination ~ Education + Agriculture, data = swiss)
+M3 <- lm(Examination ~ Education + Agriculture + Catholic, data = swiss)
+M4 <- lm(Examination ~ Education + Agriculture + Catholic + Infant.Mortality, data = swiss)
+M5 <- lm(Examination ~ Education + Agriculture + Catholic + Infant.Mortality + Fertility, data = swiss)
+```
+
+#### `textreg` for LaTex
+
+```{r, comments='##'}
+# Load texreg package
+library(texreg)
+# Create custom coefficient names
+cust_coef <- c('(Intercept)', 'Education', 'Agriculture', 'Catholic', 'Infant Mortality','Fertility')
+# Create nested regression model table
+texreg(list(M1, M2, M3, M4, M5),
+      caption = 'Nested Estimates Table with \\emph{texreg}',
+      caption.above = TRUE,
+      label = 'Basic_texregTable',
+      custom.coef.names = cust_coef)
+
+```
+
+#### `textreg` for HTML
+
+```{r, results='asis'}
+library (texreg)
+htmlreg(list(M1, M2, M3, M4, M5),
+        caption = 'Nested Estimates Table in HTML Document',
+        caption.above = TRUE,
+        custom.coef.names = cust_coef)
+```
+
+## Creating Variable Description documents with xtable
+
+```{r, results='asis'}
+# Create variable vector from column names
+Variable <- names(swiss)
+
+# Create variable description vector
+Description <- c("common standardized fertility measures",
+"% of males involved in agriculture as occupation",
+"% draftees receiving highest mark on army examination",
+"% education beyond primary school for draftees",
+"% 'catholic' (as opposed to 'protestant')",
+"% live births who live less-than 1 year"
+)
+
+# Combine Variable and Description variables into a matrix
+DescriptionsBound <- cbind(Variable, Description)
+
+# Create an xtable object from DescriptionsBound
+DescriptionsTable <- xtable(DescriptionsBound)
+
+# Format table in HTML
+DescriptTable <- print.xtable(DescriptionsTable, type = "html")
+
+# Create variable description file
+cat("# Swiss Data Variable Descriptions \n",
+    "### Source: Mosteller and Tukey, (1977) \n",
+    DescriptTable,
+    file = "SwissVariableDescriptions.md"
+)
+```
