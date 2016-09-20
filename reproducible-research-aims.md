@@ -1,7 +1,7 @@
 ---
 title: "Reproducible Research Aims"
 author: "Knight BSR"
-date: "June 22, 2016"
+date: "September 20, 2016"
 output: 
   html_document: 
     theme: flatly
