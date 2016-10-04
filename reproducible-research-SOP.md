@@ -1,5 +1,5 @@
 ---
-title: "Reproducible Research Aims"
+title: "Reproducible Research SOPs"
 author: "Knight Biostatistics Shared Resource"
 date: "September 20, 2016"
 output: 
