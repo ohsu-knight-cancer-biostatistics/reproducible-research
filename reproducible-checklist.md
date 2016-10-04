@@ -24,7 +24,7 @@ Reproduciblity can occur at every step in the history of your project. How easy 
 
 # Documentation
  
-- Did you create a README? 
+- **Did you create a README? **
 - **Is it clear where to begin? (e.g., can someone picking a project up see where to start running it) **
   + **Are all files in the appropriate folders as described by the File and Folder SOPs?**
 - **Can you determine which file(s) was/were used as input in a process that produced a derived file? **
