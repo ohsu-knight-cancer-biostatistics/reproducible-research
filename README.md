@@ -35,4 +35,4 @@ The slides and other information are in the folder: [slides-info=reproducible-re
 - April 20, 2016. Presentation slides were initially presented by J Minnier at the weekly meeting for BSR members. [Rpubs link](http://rpubs.com/minnier/repro-bsr)
 - August 16, 2016. Some BSR Study Group slides are added, folders rearranged.
 - September 7-9, 2016. More BSR Study Group slides and handouts added.
-- September 20, 2016. Updated aims and checklist.
+- September 20, 2016. Updated SOPs and checklist.
