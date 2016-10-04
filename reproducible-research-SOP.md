@@ -1,7 +1,7 @@
 ---
 title: "Reproducible Research SOPs"
 author: "Knight Biostatistics Shared Resource"
-date: "September 20, 2016"
+date: "Updated: October 4, 2016"
 output: 
   html_document: 
     theme: flatly
@@ -26,6 +26,9 @@ Knight BSR Checklist for Reproducibility should be considered at the beginning o
 
 ## Folder organization best practices
 
+- All new projects must follow this folder and file structure on the BSR server.
+- Store a complete set of files to reproducible final results in the FinalResults folder..
+
 References:
 
 - https://www.maxmasnick.com/analysis-org
@@ -37,9 +40,6 @@ References:
 
 ## File naming best practices
 
-- All new projects must follow this folder and file structure on the BSR server.
-- Store a complete set of files to reproducible final results in the FinalResults folder.
-
 References:
 
 - https://library.stanford.edu/research/data-management-services/data-best-practices/best-practices-file-naming
@@ -47,7 +47,7 @@ References:
 
 # Shared Code
 
-- Code that can be implemented in future projects as well as packages or libraries of functions should be stored in the Shared Code folder on the server, as well as github (https://github.com/ohsu-knight-cancer-biostatistics).
+- Code that can be implemented in future projects as well as packages or libraries of functions should be stored in the Resources folder on the server, as well as github (https://github.com/ohsu-knight-cancer-biostatistics).
 
 # Training
 

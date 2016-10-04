@@ -3,17 +3,19 @@ title: "Knight BSR Checklist for Reproducibility"
 output: html_document
 ---
 
-Updated: September 20, 2016
+Updated: October 4, 2016
 
 Reproduciblity can occur at every step in the history of your project. How easy will it be for others or your future self to answer these questions?
 
+**BOLDED questions are required** (check these first) and the others are suggested (we aim for maximum reproducibility, please read them and consider how your project fits into these guidelines).
+
 # Aims
 
-- Do good science.
-- Think about the whole analysis pipeline.
+- **Do good science.**
+- **Think about the whole analysis pipeline.**
 - Do not do anything by hand if you can avoid it.
 - Use version control whenever possible.
-- Document, document, document.
+- **Document, document, document.**
 
 # Data
 
@@ -23,13 +25,13 @@ Reproduciblity can occur at every step in the history of your project. How easy 
 # Documentation
  
 - Did you create a README? 
-- Is it clear where to begin? (e.g., can someone picking a project up see where to start running it) 
-  + Are all files in the appropriate folders as described by the File and Folder SOPs?
-- Can you determine which file(s) was/were used as input in a process that produced a derived file? 
+- **Is it clear where to begin? (e.g., can someone picking a project up see where to start running it) **
+  + **Are all files in the appropriate folders as described by the File and Folder SOPs?**
+- **Can you determine which file(s) was/were used as input in a process that produced a derived file? **
   + Do not save output files, save data + code + documentation instead. Only save output if you have very clearly documented how it was created.
-- Have you cited everything that should be cited? (code, data, etc.) 
-- Is there documentation about every result? 
-- Is the statistical methods section written to include every method performed?
+- **Have you cited everything that should be cited? (code, data, etc.) **
+- **Is there documentation about every result? **
+- **Is the statistical methods section written to include every method performed?**
 - Have you noted the exact version of every external application used in the process? 
 - For analyses that include randomness, have you noted the underlying random seed(s)? 
 - Have you specified the license under which you're distributing your content, data, and code? 
@@ -37,7 +39,8 @@ Reproduciblity can occur at every step in the history of your project. How easy 
  
 # Organization
  
- - Which is the most recent data file/code? 
+ - **Which is the most recent data file/code? **
+ - **Where did a file that you didn't generate come from? **
  - Which files/folders can I safely delete? 
     + Keep older files in an archive.
  - Can you find a file for a particular replicate of your research project? 
@@ -47,11 +50,11 @@ Reproduciblity can occur at every step in the history of your project. How easy 
     + Add the project folder to the TapeBackup folder on the server.
  - How many times has a particular file been generated in the past? 
  - Why was the same file generated multiple times? 
- - Where did a file that I didn't generate come from? 
+ 
  
 # Automation
  
- - Are there manual data manipulation steps? If so, are they clearly documented?
+ - **Are there manual data manipulation steps? If so, are they clearly documented?**
  - Are there hard coded values in the code or in tables or reports? Avoid this if possible.
  - Are all custom scripts under version control? 
  - Is your writing (content) under version control? 
