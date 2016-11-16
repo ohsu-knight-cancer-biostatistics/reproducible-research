@@ -1,7 +1,7 @@
 ---
 title: "Reproducible Research SOPs"
 author: "Knight Biostatistics Shared Resource"
-date: "Updated: October 4, 2016"
+date: "Updated: November 16, 2016"
 output: 
   html_document: 
     theme: flatly
@@ -56,6 +56,8 @@ References:
 - Reproducible Research Journal Club (08/2016-10/2016) - Study of Ganrud (2013)[^gr1] and Stodden, Leisch, and Peng (2014)[^slp].
 - Training in markdown, Rmarkdown, knitr, git, and github (09/2016).
 - Participation in ASA Webinar "Best Practices in Data Analysis" (09/2016)
+- Participation in ASA Webinar "Teaching Reproducible Research: Inspiring New Researchers to do More 
+Robust and Reliable Science" (11/2016)
 
 
 [^gr1]: Gandrud, C. (2013). Reproducible Research with R and R Studio. CRC Press.
