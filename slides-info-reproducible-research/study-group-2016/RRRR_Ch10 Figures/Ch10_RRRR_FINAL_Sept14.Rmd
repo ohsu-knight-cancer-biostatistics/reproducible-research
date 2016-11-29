@@ -1,0 +1,723 @@
+---
+title: "RRRR Ch.10: Showing Results with Figures"
+author: "Andy Kaempf"
+date: "September 5, 2016"
+output: slidy_presentation
+
+bibliography: BibTeX_for_Rmd.bib
+---
+
+## Set-up: prepare R environment
+
+<!-- The below code chunk only loads one package b/c all others were already loaded during R session -->
+
+```{r include=FALSE}
+# only load this package b/c all others were already loaded for the R session
+library(knitr);     library(rmarkdown);
+library(devtools);  library(repmis);
+library(tidyr);     library(dplyr);
+library(WDI);       library(ggplot2);
+library(googleVis); library(RJSONIO);
+library(Hmisc);     library(gridExtra);
+```
+
+Load necessary packages 
+
+    ```{r}`r ''`
+    library(knitr);     library(rmarkdown);
+    library(devtools);  library(repmis);
+    library(tidyr);     library(dplyr);
+    library(WDI);       library(ggplot2);
+    library(googleVis); library(RJSONIO);
+    library(Hmisc);     library(gridExtra);
+    ```
+&nbsp; <!-- &nbsp will provide a line of space in the HTML document -->
+
+Set working directory and global chunk options  
+
+    ```{r label=setup}`r ''`
+    setwd('H:/Reproducible Research/Reproducibility study group/Andy files')
+    knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.path='Ch10_figures/');
+    ```
+
+```{r label=setup, include=FALSE}
+setwd('H:/Reproducible Research/Reproducibility study group/Andy files')
+
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.path='Ch10_figures/');
+```
+
+## Outline of "Slidy" HTML presentation
+- Benefits of including dynamic figures
+- Non-knitted graphics in presentation documents
+    + **R Markdown** documents (.Rmd)
+    + **R LaTeX** documents (.Rnw)
+- `knitr` code chunk options for figures
+- Figures from default R graphics in presentation docs
+- Figures from `ggplot2` graphics in presentation docs
+- Interactive images from `googleVis` package
+
+## Advantages of including dynamic figures
+1. In R Markdown or LaTeX files, figures are not copy-and-pasted like in MS Word. Instead, figures are included by **linking** to the image file (.png, .pdf, .jpeg)
+    + if an image changes, the presentation document will reflect this change the next time the markup document is compiled. No recopying and repasting is necessary.
+2. Dynamic figures are **_sized_** and **_aligned_** with markup code rather than by pointing and clicking. This takes more time up front but saves time when making updates, allows for consistent formatting for all included figures, and is reproducible
+3. Because the images are **_not actually loaded_** in markup documents, this method of linking avoids the lag time often experienced while editing a Word doc that contains many images
+
+
+## Non-knitted graphics in R Markdown (slide 1)
+A "non-knitted" graphic is one that already exists outside the knittable document and is not created by R code in a `knitr` code chunk. 
+
+Use the following code in a .Rmd file to include a non-knitted image
+```
+  ![text](file path)
+  
+```
+
+- [text] indicates the HTML **alt** attribute and should be a short description of the image that will appear if the image fails to load in the web browser
+- (file path) is the image's file path/name or URL
+- `![]()` is similar to the `[]()` syntax used to include a hyperlink
+
+
+## Non-knitted graphics in R Markdown (slide 2)
+Markdown does not allow you to resize or position your image so you must use the HTML image ('img') tag and assign the image's file path/name to the **src** attribute.  
+
+In .Rmd files, include images (like the below image of butterflies) that can be sized and aligned using HTML markup like so: 
+```
+  <img src="four_butterflies.jpg" 
+   alt="Butterflies" 
+   width="500px" height="375px"></img>
+```
+
+<img src="four_butterflies.jpg" alt="Butterflies" width="500px" height="375px"></img>
+
+
+## Non-knitted graphics in R Markdown (slide 3)
+The HTML **src** attribute can also accept a URL.
+
+This picture of lions (centered with 'center' tag) was included with the code:
+```
+  <center><img src="http://thumbs.media.smithsonianmag.com
+   //filer/two-male-lions-Kenya-631.jpg__800x600_q85_crop.jpg" 
+   alt="Lions" 
+   width="560px" height="420px"></img></center>
+```
+
+<center><img src="http://thumbs.media.smithsonianmag.com//filer/two-male-lions-Kenya-631.jpg__800x600_q85_crop.jpg" alt="Lions" width="560px" height="420px"></img></center>
+
+
+## Non-knitted graphics in R LaTeX (slide 1)
+
+In .Rnw files, link to images using the **includegraphics** command: 
+```
+  \includegraphics[options]{file path}
+```
+
+A picture of four butterflies [@Meyer2006] is included in a LaTeX document with the code:
+
+```
+  \begin{figure}[h]
+    \caption{Caption goes here}
+    \label{lab_name}
+    \includegraphics[width=3in,keepaspectratio=true]{Meyer_2006.png}
+    {\small{Source: \cite{meyer2006repeating}}}
+  \end{figure}
+```
+
+By linking to this image from within the *figure* float environment, the image can be "floated" away from the document text at a specified location and given a caption (`\caption` command)
+
+LaTeX automatically numbers figures that are **cross-referenced** with the `\label` command. Use `\ref` command where you want the figure's number to be printed and `\pageref` for the figure's page number
+
+POSITION_SPEC arguments go inside brackets after `\begin{figure}`  
+-- 'h' places the table where it is written in the text (ie, here), 't' places it at the top of the page, and 'b' at the bottom of the page  
+
+
+## Non-knitted graphics in R LaTeX (slide 2)
+
+Notes about including pre-existing images with LaTeX markup
+
+- to access all **includegraphics** features, load the `graphicx` package in the LaTeX document's preamble (ie, top portion of the file above _document_ environment) 
+    + use LaTeX command **usepackage** to load a package in LaTeX
+- `width=3in` sets the image width at 3 inches. Other image size or alignment options are: 'scale', 'height', 'angle', and 'keepaspectratio'
+- `scale=0.8` makes the image 80 percent of its actual size and `width=0.8\textwidth` sets the image width to 80 percent of the document's text width via the LaTeX command **textwidth**
+    + if **textwidth** is included in a code chunk, two backslashes must precede it: the first one as the R escape character and the second one as the beginning of the LaTeX command
+
+
+## [Code chunk figure options](http://yihui.name/knitr/options/#chunk_options)
+
+- fig.path -- specify a file path to a directory where `knitr` will store figure files
+- fig.align -- alignment of figure in presentation doc ('left', 'center', 'right')
+- fig.height & fig.width -- height/width of the saved plot (default is 7 in)
+- dev or fig.ext -- 'graphical device' or 'figure extension' to save image as
+    + possible values: 'png', 'pdf', 'bmp', 'jpeg', 'gif', 'tiff', 'eps' 
+- fig.cap -- set figure's caption/title
+- fig.lb -- set figure's label for cross-references (LaTeX)
+- out.height & out.width -- height/width to scale the figure in the presentation doc 
+
+**R Markdown** files: 'out.height' and 'out.width' take arguments with units of pixels (px)  
+
+**R LaTeX** files: 'out.height' and 'out.width' take arguments with units of inches (in), centimeters (cm), or scaled as a proportion of a page element
+
+
+## R default graphics -- Example #1 (slide 1)
+
+**Goal**: Create a _scatterplot_ of cars' speeds and stopping distances  
+
+**Data Source**: Preloaded `cars` dataset. Type `?cars` into the R console to learn about this dataset. 
+
+**Steps** to produce the _scatterplot_: 
+
+1. Inspect the data  
+2. use **plot()** function to create the plot 
+
+&nbsp;
+
+Extra: **plot()** is a generic function, meaning it invokes **UseMethod()** to determine the class of its first argument and then search for a plot function specific to this class. If no class-specific function is found, **plot.default()** is called.
+
+Other R default graphic commands are **hist()**, **boxplot()**, **pie()**, **stars()**
+
+
+## R default graphics -- Example #1 (slide 2)
+
+Step #1: inspect the data
+```{r collapse=TRUE}
+# look at variables in cars data.frame
+str(cars)
+```
+**str()** gives the structure of an object and lists its components -- which are two numeric variables: _speed_ and _dist_
+
+Step #2: create the _scatterplot_ 
+
+    ```{r cars, fig.align='center', fig.height=6, fig.width=6, dev='jpeg'}`r ''`
+    plot(x = cars$speed, y=cars$dist, 
+         main = "Scatterplot:  default R graphics", 
+         xlab = "Speed (mph)", ylab = "Stopping Distance (feet)", 
+         cex.lab = 1.25, cex.main = 1.5, pch=8)
+    abline(lsfit(cars$speed,cars$dist), lwd=2.5, col="red")
+    lines(lowess(cars$speed,cars$dist), lwd=2.5, col="blue")
+    legend(x=5, y=115, c("linear regression","loess smoother"),
+           lwd=2.5, col=c("red","blue"))
+    ```
+Note that a **JPEG** of the scatterplot is created by `knitr` (default is PNG for .Rmd)
+
+## R default graphics -- Example #1 (slide 3)
+
+```{r cars, echo=FALSE, fig.align='center', fig.height=6, fig.width=6, dev='jpeg', strip.white=TRUE}
+plot(x = cars$speed, y=cars$dist, main = "Scatterplot:  default R graphics", 
+     xlab = "Speed (mph)", ylab = "Stopping Distance (feet)", cex.lab = 1.25,
+     cex.main = 1.5, pch=8)
+abline(lsfit(cars$speed,cars$dist),lwd=2.5,col="red")
+#lines(cars$speed, predict(loess(dist ~ speed, data=cars)), col = "blue")
+lines(lowess(cars$speed,cars$dist),lwd=2.5,col="blue")
+legend(5,115,c("linear regression","loess smoother"),lwd=2.5,col=c("red","blue"))
+
+```
+A simpler version of this _scatterplot_ can be created by sourcing a code file hosted on GitHub
+
+```
+source_url("https://raw.githubusercontent.com/christophergandrud
+            /Rep-Res-Examples/master/Graphs/SimpleScatter.R")
+```
+
+```{r eval=FALSE, include=FALSE}
+devtools::source_url("http://bit.ly/1D5p1w6")
+devtools::source_url("https://raw.githubusercontent.com/christophergandrud/Rep-Res-Examples/master/Graphs/SimpleScatter.R")
+```
+
+
+## R default graphics -- Example #2 (slide 1)
+
+**Goal**: Create _scatterplot matrix_ of World Bank variables 
+
+**Data source**: World Bank's Development Indicators database [@World_Bank], accessed by either:  
+
+- downloading data directly via `WDI` package that utilizes the World Bank [website](http://data.worldbank.org/data-catalog/world-development-indicators) API.
+    + pass in text argument 'fertilizer consumption' to **WDIsearch()** function and then select an indicator of an available World Bank variable pertaining to the text argument by using the **WDI()** function (see RRRR p.124) 
+- downloading the data (.csv) from the author's GitHub page using `repmis` package's **source_data()** function 
+
+Other R packages that enable direct downloads of web data by utilizing API's are found [here](http://stats.stackexchange.com/questions/12670/data-apis-feeds-available-as-packages-in-r). Examples include `twitteR` (for tweets and trending topics), `quantmod` (for Google and Yahoo finance data), and `ZillowR` (for real estate and mortgage data)
+
+**Steps** to produce _scatterplot matrix_:  
+1. Load data and examine variable names   
+2. Subset the data (only include 2003 obs.) and remove ID variables  
+3. use **pairs()** function to create the figure  
+
+
+## R default graphics -- Example #2 (slide 2)
+
+Step #1: load data from [GitHub](http://bit.ly/V0ldsf), list variable names, and make sure the three variables being plotted are quantitative
+
+```
+MainData <- source_data("https://raw.githubusercontent.com/christophergandrud
+                         /Rep-Res-Examples/master/DataGather_Merge/MainData.csv")
+```
+    
+```{r include=FALSE}
+# download the .csv file from the author's GitHub page (URL on RRRR p.199)
+MainData <- repmis::source_data("http://bit.ly/V0ldsf")
+```
+
+```{r collapse=TRUE}
+# make sure source_data() loads a data.frame object
+class(MainData)
+
+names(MainData)
+
+# shorten variable names with rename() 
+MainData2 <- dplyr::rename(MainData, Fert = FertilizerConsumption, disprop = disproportionality)
+
+# sapply() applies a function to each element of the 1st arg and returns a vector
+# sapply() is a wrapper for lapply(), which returns a list
+sapply(MainData2[,5:7], class)
+```
+
+
+## R default graphics -- Example #2 (slide 3)
+
+Step #2: subset the data and assess the quantitative variables of interest 
+```{r}
+# these two commands do the same thing (only run 1 of them)
+SubData <- MainData2 %>% dplyr::filter(year == 2003) %>% dplyr::select(reg_4state, disprop, Fert)
+SubData2 <- subset(MainData2[, 5:7], MainData2$year == 2003)
+```
+
+```{r collapse=TRUE}
+# compute frequency counts of discrete var's levels
+table(SubData$reg_4state)
+
+# compute summary stats for continuous vars. 
+lapply(SubData[,c("disprop", "Fert")], summary, digits=3)
+
+# remove rows with very large fertilizer values
+No_tail <- subset(SubData, Fert < 1000)
+```
+
+Extra: use **describe()** function from `Hmisc` package to provide extra summary info such as number of unique values and the lowest 5 and highest 5 values
+
+
+## R default graphics -- Example #2 (slide 4)
+
+Step #3: create the _scatterplot matrix_ with this code chunk:
+
+    ```{r WB_plot, fig.cap="Caption is placed here", fig.align='center'}`r ''`
+    pairs(x = No_tail, main="WB development indicators", lower.panel=NULL)
+    ```
+
+``` {r WB_plot, echo=FALSE, fig.cap="Caption is placed here", fig.height=7, fig.width=7, fig.align='center'}
+pairs(x = No_tail, main="WB development indicators", lower.panel=NULL)
+```
+
+
+## References for R default graphics 
+
+- [Quick-R webpage on Graphs](http://www.statmethods.net/advgraphs/)
+- [R Graphics Cookbook: Practical Recipes for Visualizing Data](http://ase.tufts.edu/bugs/guide/assets/R%20Graphics%20Cookbook.pdf) (Chang, 2012)
+- [R Graphics](https://www.stat.auckland.ac.nz/~paul/RGraphics/rgraphics.html) book (Murrell, 2011)
+
+
+## Intro to knitting ggplot2 graphics (slide 1)
+
+- `ggplot2` is an R package for creating publication-quality figures
+- 'gg' = *grammer of graphics*, referring to a formal, structured approach to building figures by adding component **layers**. Layers can be the coordinate system, points, lines, etc.
+- the main layers are called `geoms` (geometric objects), which are the visual representations of data points
+- `geom` examples (listed as R function names):  
+    + geom_point() -- scatterplots
+    + geom_bar() -- bar charts 
+    + geom_boxplot() -- box--and--whisker plots
+    + geom_smooth() -- smooth line fit to data with 'lowess' as default
+    + geom_text() -- textual annotations
+- layers have **aesthetics** (visual properties) added to figures with 'aes()' argument. Examples of aesthetics are the variables assigned to axes, label sizes, colors, and shapes.
+
+
+## Intro to knitting ggplot2 graphics (slide 2)
+According to the book 'ggplot2: Elegant Graphics for Data Analysis, 2nd ed.' [see @Wickham2016], all plots created by `ggplot2` have three key components:
+
+1. The **data**
+2. The **aesthetic mapping** of variables to visual features
+3. **Layers** that describe how to render the observations. Most layers are created with a 'geom' function
+
+An example of these 3 components using the `ggplot2` dataset 'mpg':
+```{r wickham_book, echo=c(1,2,3), eval=c(1,2,3), fig.height=4, fig.width=8, fig.align='center'}
+plot1 <- ggplot(data=mpg, aes(x=displ, y=hwy)) + geom_point() + geom_smooth(span=0.3)
+plot2 <- ggplot(data=mpg, aes(x=displ, y=hwy)) + geom_point() + geom_smooth(span=0.7)
+gridExtra::grid.arrange(plot1, plot2, ncol=2)
+```
+
+- References: 
+    + [ggplot2 reference manual](https://cran.r-project.org/web/packages/ggplot2/ggplot2.pdf)
+    + [official ggplot2 documentation](http://docs.ggplot2.org/current/)
+    + [Vanderbilt University ggplot2 workshop](http://ggplot2.org/resources/2007-vanderbilt.pdf)
+    + [Rstudio's ggplot2 cheatsheet](https://www.rstudio.com/resources/cheatsheets/)
+
+
+## ggplot2 -- Example #1 (slide 1)
+
+**Goal**: Create _line plot_ showing change over time of actual and forecasted inflation 
+
+**Data source**: stored on the author's [GitHub page](https://raw.githubusercontent.com/christophergandrud/Rep-Res-Examples/master/Graphs/InflationData.csv)
+
+Download data from a GitHub page using the `repmis` package's **source_data()** command and passing the data file URL as the lone argument
+&nbsp;
+
+**Steps** to produce the _time series plot_:
+
+1. Load data and examine data structure  
+2. Reshape data with `tidyr` to prepare for using `ggplot2`  
+3. Use **ggplot()** function to create the line plot  
+
+
+## ggplot2 -- Example #1 (slide 2)
+
+Step #1: Download the data
+
+    ```{r eval=TRUE, include=TRUE}`r ''`
+    InflationData <- repmis::source_data("https://raw.githubusercontent.com
+    /christophergandrud/Rep-Res-Examples/master/Graphs/InflationData.csv");
+    ```
+
+```{r eval=TRUE, include=FALSE}
+InflationData <- repmis::source_data("https://raw.githubusercontent.com/christophergandrud/Rep-Res-Examples/master/Graphs/InflationData.csv");
+```
+
+Determine variable names and inspect the first 5 observations
+```{r eval=TRUE, collapse=TRUE}
+dim(InflationData)
+names(InflationData)
+head(InflationData,n=5)
+```
+
+There are **3 variables** in this dataset:  
+1. *Quarter*: the year and fiscal quarter  
+2. *ActualInflation*: the actual U.S. inflation rate for the given quarter  
+3. *EstimatedInflation*: Federal Reserve's inflation forecast made two quarters prior  
+
+
+##  ggplot2 -- Example #1 (slide 3)
+To plot a separate line for each inflation measurement, we need to restructure the data so that *ActualInflation* and *EstimatedInflation* become the values of a new variable (*key*) and the measures themselves are stored in a separate variable (*value*). 
+
+Step #2: Reshape data with `tidyr` package:
+
+- use **gather()** to convert to long-format and **spread()** to convert to wide-format
+- last argument of **gather()** indicates column positions of the variables to 'gather'
+```{r eval=TRUE, collapse=TRUE}
+# reshape data from wide to long format with `gather` command 
+GatheredInflation <- tidyr::gather(data=InflationData, key=key, value=value, 2:3)
+
+# notice there are now twice as many obs. (hence, long format)
+dim(GatheredInflation)
+
+# inspect the first 5 observations of the long-format dataset
+head(GatheredInflation,n=5)
+```
+
+
+## ggplot2 -- Example #1 (slide 4)
+
+Step #3: Create the multi-line _time series plot_ using **ggplot()**
+
+    ```{r label=time_plot, fig.align='center'}`r ''`
+    LinePlot <- ggplot2::ggplot(data = GatheredInflation, 
+            aes(x = Quarter, y = value, color = key, linetype = key)) + 
+            geom_line() + 
+            scale_color_discrete(name="", labels=c("Actual","Estimated")) + 
+            scale_linetype(name="", labels=c("Actual","Estimated")) + 
+            xlab("\n Quarter") + ylab("Inflation\n") + theme_bw(base_size = 15)
+    print(LinePlot)
+    ```
+
+```{r label=time_plot, eval=TRUE, echo=FALSE, fig.align='center'}
+LinePlot <- ggplot(data = GatheredInflation, aes(x = Quarter,
+                                               y = value,
+                                               color = key,
+                                               linetype = key)) +
+                    geom_line() +
+                    scale_color_discrete(name = "", labels = c("Actual", 
+                                                               "Estimated")) +
+                    scale_linetype(name = "", labels = c("Actual", 
+                                                         "Estimated")) +
+                    xlab("\n Quarter") + ylab("Inflation\n") +
+                    theme_bw(base_size = 15)
+
+
+print(LinePlot)
+```
+
+
+## ggplot2 -- Example #1 (slide 5)
+
+Explanation of `ggplot2` functions used:
+
+- **ggplot()** -- initializes plot by identifying the dataset and setting plot aesthetics  
+- **geom_line()** -- connects observations in order of the x-axis variable  
+- **scale_color_discrete()** -- hides legend title (with 'name') but defines legend labels associated with line colors  
+- **scale_linetype()** -- hides legend title but defines legend labels associated with line types  
+- **xlab()** and **ylab()** -- provide axis labels 
+- **theme_bw()** -- sets a theme with a white background; argument 'base_size' controls the plot's font size  
+
+You can reproduce this analysis by sourcing the R code file from GitHub at: <http://bit.ly/VEvGJG>. To run the entire analysis just shown, include the following R code in a chunk:
+```
+    devtools::source_url("http://bit.ly/VEvGJG")
+```
+
+```{r eval=FALSE, include=FALSE}
+devtools::source_url("http://bit.ly/VEvGJG")
+```
+
+
+## ggplot2 -- Example #2 (slide 1)
+
+**Goal**: Create a _caterpillar plot_ showing estimates of a regression model's parameters 
+
+**Data source**: `swiss` dataset preloaded with R. This dataset provides fertility and socioeconomic indicator data for 47 Swiss provinces from 1888.
+
+**Steps** to produce the _caterpillar plot_:
+
+1. Inspect the data  
+2. Fit the linear regression model (see 'Note' below)  
+3. Extract and reformat model output to prepare for plotting  
+4. Use **ggplot()** function to create the plot  
+
+Note: A frequentist rather than a Bayesian normal linear regression model (like what is shown in the book) is fit here because the `Zelig` package has been modified and the author's code no longer works (according to the book's [Errata page](http://christophergandrud.github.io/RepResR-RStudio/errata.htm).)
+
+
+## ggplot2 -- Example #2 (slide 2)
+
+Step #1 -- inspect the data 
+```{r eval=TRUE, collapse=TRUE, fig.align='center', fig.height=3.75, fig.width=5}
+# determine number of observations and variables in data.frame
+dim(swiss)
+
+# list variable names
+names(swiss)
+
+# show distribution of outcome measure
+hist(x=swiss$Examination, xlab="% military draftees with highest score", 
+    main = "Histogram of Examination variable", border="dodgerblue")
+```
+
+## ggplot2 -- Example #2 (slide 3)
+
+Steps #2 and #3 -- fit the model with **lm()** and reformat output
+
+Model the percentage of draftees receiving the highest army exam score (**Examination**) as a function of educational level (**Education**), male involvement in agriculture (**Agriculture**), proportion of catholics (**Catholic**), and infant mortality rate (**Infant.Mortality**). Each observation is a separate Swiss province.
+
+```{r eval=TRUE}
+# fit the model
+LinearModel <- lm(Examination ~ Education + Agriculture + 
+                  Catholic + Infant.Mortality, data = swiss)
+
+# create the summary object and save the coefficient estimates 
+Model_coeff_DF <- data.frame(summary(LinearModel)$coefficients)
+
+# make row.names attribute into a new column/variable
+Model_coeff_DF$Coeff <- row.names(Model_coeff_DF)
+
+# extract the confidence limits for the coefficients using confint()
+CI_DF <- data.frame(confint(LinearModel))
+
+# make row.names attribute a new column of CI data.frame
+CI_DF$Coeff <- row.names(CI_DF)
+
+# merge the two data frames to combine the point and interval estimates 
+merged_DF <- merge(Model_coeff_DF,CI_DF)
+
+# remove intercept so coefficients are plotted on a more interpretable scale
+final_DF <- subset(merged_DF, Coeff != "(Intercept)")
+```
+
+
+## ggplot2 -- Example #2 (slide 4)
+
+Step #4: create the _caterpillar plot_
+
+    ```{r label=caterpillar, eval=TRUE}`r ''`
+    CatPlot <- ggplot(data = final_DF, aes(x = reorder(Coeff, X2.5..), 
+               y = Estimate, ymin = X2.5.., ymax = X97.5..)) + 
+               geom_pointrange(size = 1.4) + 
+               geom_hline(aes(yintercept = 0), linetype = "dotted") + 
+               ggtitle("Caterpillar plot of regression estimates\n")
+               xlab("Variable\n") + ylab("\nCoefficient Estimate") + 
+               coord_flip() + theme_bw(base_size = 20)
+    print(CatPlot)
+    ```
+New `ggplot2` commands: 
+
+- **geom_pointrange()** -- geom that is a vertical line with a point in the middle
+    + **reorder()** function reorders Coefficient names based on lower conf. limit values
+- **geom_hline()** -- geom that adds a horizontal line to a plot
+    + **aes()** option should be 'yintercept' rather than 'intercept' like in the book
+- **ggtitle()** -- adds a plot title
+- **coord_flip()** -- flips/exchanges the coordinate axes
+
+
+## ggplot2 -- Example #2 (slide 5)
+
+```{r label=caterpillar, eval=TRUE, echo=FALSE}
+# create Caterpillar plot
+CatPlot <- ggplot(data = final_DF, aes(x = reorder(Coeff, X2.5..), y = Estimate, ymin = X2.5.., ymax = X97.5..)) + geom_pointrange(size = 1.4) + geom_hline(aes(yintercept = 0), linetype = "dotted") + ggtitle("Caterpillar plot of regression estimates\n") + xlab("Variable\n") + ylab("\nCoefficient Estimate") + coord_flip() + theme_bw(base_size = 20)
+
+print(CatPlot)
+```
+
+
+## ggplot2 -- Example #3 (slide 1)
+
+**Goal**: Create a boxplot inside a violin plot showing blood pressure distribution by gender 
+
+**Data source:** Online via Univ. of Washington professor Ken Rice's [webpage](http://faculty.washington.edu/kenrice/heartgraphs/nhaneslarge.csv) and graphically analyzed in a paper [@UW_heart]
+
+R code modified from the OHSU Jamboree on Data Visualization (June 2016)
+
+**Steps** to produce the _violin plot_:
+
+1. Load the data  
+2. Examine the variables  
+3. Use **ggplot()** function to create the figure 
+
+
+## ggplot2 -- Example #3 (slide 2)
+
+Step #1: Download the data in 2 ways:
+
+1. using **read_csv()** from `readr` package
+
+    ```{r}`r ''`
+    heart <- read_csv("http://faculty.washington.edu/kenrice
+                       /heartgraphs/nhaneslarge.csv", na=".")
+    ```
+2. using **source_data()** from `repmis` package 
+
+    ```{r}`r ''`
+    heart <- source_data("http://faculty.washington.edu/kenrice
+                          /heartgraphs/nhaneslarge.csv")
+    ```
+
+```{r include=FALSE}
+heart <- repmis::source_data("http://faculty.washington.edu/kenrice/heartgraphs/nhaneslarge.csv")
+```
+&nbsp;
+
+Step #2: Examine var. names and summary stats for outcome measure (by sex)
+```{r include=TRUE, collapse=TRUE}
+names(heart)
+
+summary(heart[heart$gender == "Female",]$BPXSAR)
+
+summary(heart[heart$gender == "Male",]$BPXSAR)
+```
+
+
+## ggplot2 -- Example #3 (slide 3)
+
+Step #3: Create the _violin plot_ overlaid with a boxplot 
+
+    ```{r label=violin, fig.align='center'}`r ''` 
+    ggplot(heart, aes(x = gender, y = BPXSAR)) + 
+    geom_violin(alpha = 0.5, size = 0.8) + 
+    geom_boxplot(width = 0.2, size = 0.8, fill="cyan", outlier.colour=NA) + 
+    stat_summary(fun.y=median, geom="point", fill="white", shape=21, size=4) +
+    stat_summary(fun.y=mean, geom="point", fill="red", shape=21, size=4) +
+    labs(title="SBP distribution by sex (NHANES)", x="Systolic BP (mmHg)", y="")
+    ```
+New `ggplot2` commands:  
+
+- **geom_violin()** -- creates a violin plot, which is a mirrored KDE of a pdf
+    + 'alpha' controls the transparency, 'size' controls the line thickness
+- **geom_boxplot()** -- creates a box-and-whisker plot that is sized and colored
+    + boxplot outliers are hidden by setting their color to NA
+- **stat_summary()** -- summarizes y-values at a unique x-value ('gender' level)
+    + places a white dot at the median SBP and a red dot at the mean SBP
+- **labs()** -- change axis labels and add title
+    
+## ggplot2 -- Example #3 (slide 4)
+
+```{r label=violin, echo=FALSE, fig.align='center'}
+ggplot(heart, aes(x = gender, y=BPXSAR)) + geom_violin(alpha = 0.5, size = 0.8) + geom_boxplot(width = 0.2, fill="cyan", size = 0.6, outlier.colour=NA) + stat_summary(fun.y=median, geom="point", fill="white", shape=21, size=4) + stat_summary(fun.y=mean, geom="point", fill="red", shape=21, size=4) + labs(title="SBP distribution by sex (NHANES)", x = "Systolic BP (mmHg)", y="")
+```
+
+
+## Knitted interactive graphics (slide 1)
+
+Thus far, we have only dealt with **static** graphics from base R and `ggplot2`
+
+`googleVis` is an R package that accesses Google Chart Tools via Google's Visualization API in order to display **interactive** tables, figures, and maps (written in JavaScript). The Google Chart Tool utilized in this example is [GeoChart](https://google-developers.appspot.com/chart/interactive/docs/gallery/geochart)
+
+
+**Goal**: Create a _choropleth map_ showing Fertilizer Consumption (in kilograms per hectare of arable land) for countries across the globe 
+
+**Data source**: Use same data from [World Bank Development Indicators website](http://data.worldbank.org/data-catalog/world-development-indicators) that was used for the scatterplot matrix. The data can be downloaded from this website using `WDI` package or from [GitHub](https://raw.githubusercontent.com/christophergandrud/Rep-Res-Examples/master/DataGather_Merge/MainData.csv) with the **source_data()** command
+
+**Steps** to produce _choropleth map_:  
+1. Subset the data.frame to concentrate on 2003 observations   
+2. remove countries with very small fertilizer values and log-transform  
+3. use `googleVis` package's **gvisGeoChart()** function to create the map
+
+Extra: a _choropleth map_ uses graded differences in color shading (or various symbols or patterns) inside of defined map regions to represent the value of some continuous measurement
+
+## Knitted interactive graphics (slide 2)
+
+Steps #1 and #2: Subset data and take natural log to reduce skew
+
+    ```{r eval=TRUE}`r ''`
+    Data_2003 <- subset(MainData, year == 2003 & FertilizerConsumption > 0.1)
+    Data_2003$LogConsumption <- round(log(Data_2003$FertilizerConsumption), 
+                                digits = 1)
+    ```
+```{r include=FALSE}
+MainData <- repmis::source_data("http://bit.ly/V0ldsf")
+```
+
+```{r eval=TRUE, include=FALSE}
+Data_2003 <- subset(MainData, year == 2003 & FertilizerConsumption > 0.1)
+Data_2003$LogConsumption <- round(log(Data_2003$FertilizerConsumption), digits = 1)
+```
+  
+Step #3: Create global map of fertilizer consumption using **gvisGeoChart()**
+
+    ```{r geo_chart, eval=TRUE, results='asis'}`r ''`
+    FCMap <- gvisGeoChart(data = Data_2003, locationvar = "iso2c", 
+             colorvar = "LogConsumption", 
+             options = list(colors = "['#ECE7F2', '#A6BDDB', '#2B8CBE']", 
+             width = 936, height = 600))
+    print(FCMap, tag = "chart")
+    ```
+
+- argument 'locationvar' is passed the 
+[ISO two-letter country code](http://www.iso.org/iso/country_codes.htm) variable needed by Google Chart Tools to determine country locations
+- map color palettes are specified using hexadecimal notation. See the [Color Brewer 2 website](http://colorbrewer2.org/) for choosing hexadecimal color codes
+
+
+## Interactive choropleth map of fertilizer consumption
+
+```{r geo_chart, echo=FALSE, eval=TRUE, fig.align='center', results='asis'}
+FCMap <- googleVis::gvisGeoChart(data = Data_2003, locationvar = "iso2c", colorvar = "LogConsumption",       options = list(colors = "['#ECE7F2', '#A6BDDB', '#2B8CBE']", width = 936, height = 600))
+
+print(FCMap, tag = "chart")
+```
+
+## Knitted interactive graphics (slide 4)
+
+Alternatively, create this interactive map by sourcing the author's R script stored on [GitHub]("http://bit.ly/VNnZxS")  
+
+    ```{r eval=FALSE, results='asis'}`r ''`
+    # Create and print Global map of fertilizer consumption 
+    devtools::source_url("http://bit.ly/VNnZxS")
+    ```
+
+- must set chunk option `results='asis'` in order to have the interactive image (instead of the JavaScript code) appear in the HTML presentation document
+
+- interactive JavaScript graphics cannot be directly incorporated in R LaTeX documents
+
+&nbsp;
+
+References for JavaScript interactive graphics:
+
+- `googleVis` 
+[website](http://code.google.com/p/google-motion-charts-with-r/wiki/GadgetExamples#googleVis_Examples)
+- [gvisGeoChart documentation](http://www.rdocumentation.org/packages/googleVis/versions/0.6.0/topics/gvisGeoChart)
+
+```{r, echo=FALSE, eval=FALSE, results='asis'}
+devtools::source_url("http://bit.ly/VNnZxS")
+```
+
+## BibTeX references (from .bib file)
+
+<!-- This is an HTML comment that should not show up in the output doc -->

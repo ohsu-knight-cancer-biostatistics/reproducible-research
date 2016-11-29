@@ -1,0 +1,881 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Beamer document preamble  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+\usepackage[backend=bibtex,style=authoryear]{biblatex}
+\usepackage{url}
+\usepackage{hyperref}
+
+\setbeamertemplate{caption}[numbered]
+\setbeamerfont{caption}{size=\normalsize}
+\addbibresource{beamer_citations.bib}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%   Beamer document body    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%% Title page information -- should this go in the preamble about \begin{document} ?
+\title{RRRR Ch 11: Presenting with \emph{knitr} and \LaTeX{}}
+\author{\href{mailto:kaempf@ohsu.edu}{Andy Kaempf}}
+%\author{Andy Kaempf}
+
+%% Title slide
+\frame{
+  \titlepage
+}
+
+%% Table of contents slide
+%\frame{
+  %\frametitle{Outline}
+  %% below command lists all the \section names
+  %\tableofcontents
+%}
+
+\begin{frame}[allowframebreaks]{Outline}
+  \tableofcontents
+\end{frame}
+
+
+%%% Introduction to LaTeX             Introduction to LaTeX                   Introduction to LaTeX 
+\section{Intro to LaTeX}
+\begin{frame}[fragile]
+    \frametitle{Intro to LaTeX}
+    \LaTeX{} is a markup language and document preparation program (macro package) that utilizes the \TeX{} typesetting system.  
+    \vspace{4mm}
+    
+    \textbf{RStudio} is a fully-functioning \LaTeX{} editor from which you can compose a \LaTeX{} source file. Source files are compiled to produce a PDF (or EPS) typeset document. 
+    \vspace{4mm}
+    
+    Other \LaTeX{} editors are listed and compared  
+    here: \url{http://en.wikipedia.org/wiki/List_of_text_editors}.
+    \vspace{4mm}
+    
+    Gandrud used the `Sublime Text' editor when writing \LaTeX{} markup for his book (\cite{Gandrud2015}). 
+    Some popular \LaTeX{} editors include: TeXmaker, TeXstudio, TeXworks (included in MiKTeX), Overleaf, and the            TeXlipse plug-in for the Eclipse IDE. 
+
+\end{frame}
+
+%%% DOCUMENT CLASSES                  DOCUMENT CLASSES              DOCUMENT CLASSES
+\section{Document classes}
+
+% need [fragile] after {frame} to use \verb command and for chunk syntax highlighting 
+\begin{frame}[fragile]
+    \frametitle{LaTeX document types}
+    
+    %\subsection{LaTeX document classes (types)}
+    
+    \LaTeX{} \textbf{document classes} are assigned with the \verb|\documentclass| command and specify how the           compiled output will be formatted. This command is the first line of the \LaTeX{} source file.
+    \vspace{3mm}
+    
+    Types of document classes:
+    \begin{itemize}
+            \item article (no chapters)
+            \item report
+            \item book
+            \item letter
+            \item beamer (slideshow)
+    \end{itemize}
+    \vspace{3mm}
+    
+    Document class \textbf{options} are specified inside of brackets:
+    \verb|\documentclass[(option1),(option2)]{class_name}|  
+    
+\end{frame} 
+
+
+%% DOCUMENT STRUCTURE            DOCUMENT STRUCTURE             DOCUMENT STRUCTURE  
+\section{Document structure}
+\begin{frame}[fragile]
+    \frametitle{Document structure}
+    
+    \LaTeX{} documents consist of 2 main parts: \textbf{preamble} and \textbf{body}  \vspace{4mm}
+    \begin{enumerate}
+        \item \textbf{preamble}: required in all \LaTeX{} documents, this is where you define the                                                      document class, load packages, and set styles  
+            \begin{itemize}
+                \item include \verb|\setbeamertemplate{caption}[numbered]| in the preamble 
+                      to show caption numbers in 'float' environments
+            \end{itemize}  \vspace{2mm}
+        
+        \item \textbf{body}: this is where the content of your document is entered. The body is represented 
+                            by the \texttt{\emph{document}} environment (see slide \ref{enviro}) and delimited by the                                  commands \verb|\begin{document}| and \verb|\end{document}| 
+    \end{enumerate}
+    
+\end{frame}
+
+
+%%%   PACKAGES                    PACKAGES                     PACKAGES
+\section{LaTeX Packages}
+
+\begin{frame}[fragile]
+    \frametitle{LaTeX Packages}
+    
+    A \textbf{\LaTeX{} package} is composed of one or more files (usually .sty) containing 
+    environment definitions and macros (\cite{RPI2007})  \vspace{2mm}
+    
+    Although many packages come installed with \TeX{} distributions, \textbf{extra packages} can be loaded
+    for additional functionality
+    \vspace{2mm}
+    
+    Packages are \textbf{loaded} with the command: \verb|\usepackage[options]{package_name}|. Place these commands under 
+    the \verb|\documentclass{}| line in the preamble  \vspace{2mm}
+    
+    Examples of packages loaded for this .Rnw file:
+    \begin{itemize}
+        \item graphicx \hspace{0.5mm} -- for inserting image files
+        \item fancyvrb \hspace{0.5mm} -- needed for \texttt{\emph{Verbatim}} enviro.
+        \item biblatex \hspace{0.5mm} -- for bibliographies with ``biber'' backend
+    \end{itemize}  \vspace{2mm}
+    
+    See the \href{https://www.ctan.org/pkg}{Comprehensive \TeX{} Archive Network package page} or the 
+    \href{https://en.wikibooks.org/wiki/LaTeX/Package_Reference}{Wikibooks page} 
+    for lists of packages with short descriptions 
+    
+\end{frame}
+
+
+%%%   ENVIRONMENTS                    ENVIRONMENTS                      ENVIRONMENTS
+\section{LaTeX Environments}
+
+\begin{frame}[fragile]
+    \frametitle{LaTeX Environments}
+    \label{enviro}
+    
+    \textbf{Environments} are text blocks inside of which special formatting and features exist.
+    \href{http://www.personal.ceu.hu/tex/environ.htm}{Click here for a list of environments}. 
+    \vspace{2mm}
+    
+    Begin an environment like this: \verb|\begin{environment_name}|  
+    \vspace{2mm}
+    
+    End an environment like this: \verb|\end{environment_name}|
+    \vspace{3mm}
+    
+    \LaTeX{} environment examples:
+    \begin{itemize}
+        \item \texttt{\emph{document}} to define a document's body
+        \item \texttt{\emph{frame}} for a new slideshow frame
+        \item \texttt{\emph{itemize}} and \texttt{\emph{enumerate}} for lists
+        \item \texttt{\emph{flushleft}}, \texttt{\emph{center}}, \texttt{\emph{flushright}} to justify text or displays
+        \item \texttt{\emph{tabular}} to generate (hard-code) tables
+        \item \texttt{\emph{table}} and \texttt{\emph{figure}} are `float' environments
+        \item \texttt{\emph{quotation}} and \texttt{\emph{quote}} for text indented on both sides
+    \end{itemize}
+    
+\end{frame}
+
+%%% General syntax part 1                          General syntax: part 1
+\section{General syntax: part 1}
+\begin{frame}[fragile]
+    \frametitle{General syntax: part 1}
+      
+    \begin{itemize}
+        \item The \LaTeX{} \textbf{comment} character is a percent sign: \%  \vspace{2mm}
+        
+        \item Like in R, the \LaTeX{} \textbf{escape} character is a backslash: \verb|\| 
+        \begin{itemize}
+            \item to print a backslash \textbackslash, use \verb|\textbackslash| command
+        \end{itemize}  \vspace{2mm}
+        
+        \item The \textbf{new line} character is \verb|\\|. Add \textbf{vertical space} with the command 
+        \verb|\vspace{distance}|, where an example `distance' is 2mm. 
+        I have added 2 mm of vertical space after this line.  \vspace{2mm}
+        
+        \item Create \textbf{negative space} with commands \verb|\!| (thin minus space) and 
+        \verb|\kern-1em| (larger 'quad' minus space)  \vspace{2mm}
+        
+        \item Add \textbf{horizontal space} between words with the command \verb|\hspace{distance}|. In this sentence I have added 5 mm of horizontal space between these last two \hspace{5mm} words.
+    \end{itemize}
+    
+\end{frame}
+
+%%% General syntax part 2                    General syntax: Part 2
+\section{General syntax: part 2}
+\begin{frame}[fragile]
+    \frametitle{General syntax: part 2}
+    
+    \begin{itemize}
+        \item \LaTeX{} commands begin with a \textbf{backslash \textbackslash{}} and arguments are included inside of \textbf{curly braces} \verb|{}|. Unlike in R, a command/function can be invoked without including the braces after its name if no arguments are being passed.  \vspace{2mm}
+        
+         \item To print \LaTeX{} syntax without it being compiled use \textbf{\textbackslash{}verb}, where the command or special character you want to display but not execute is placed between a pair of the same characters, such as \verb|#| 
+         \begin{itemize}
+            \item eg, to display the opening command in a Beamer slideshow, include the code: 
+            \verb|\verb#\documentclass{beamer}#|
+         \end{itemize}  \vspace{2mm}
+         
+        \item To print and format blocks of text \textbf{ignored by \LaTeX{}} use the 
+              \texttt{\emph{Verbatim}} environment from the \textsl{fancyvrb} package 
+        
+    \end{itemize}
+    
+\end{frame}
+
+%%% Document layout commands: part 1                      Document layout commands: part 1    
+\section{Layout commands: part 1}        
+\begin{frame}[fragile]
+    \frametitle{Document layout commands: part 1}
+    
+    Section-level headings are added to the \textbf{navigation bar}\footnote{called 'Bookmarks' in Adobe Acrobat and 
+    SumatraPDF} with the \verb|\section{}| command. 
+    In Beamer docs, this command does \textbf{not} create a frame heading (the \verb|\frametitle{}| command does) 
+        \begin{itemize}
+            \item the section heading command for this frame is: 
+            \verb|\section{Layout commands: part 1}|
+            \item the frame title command is: \verb|\frametitle{Document layout commands: part 1}|
+        \end{itemize}  \vspace{2mm}
+            
+    Sub-section-level headings are included with these commands
+        \begin{itemize}
+            \item \verb|\subsection{}|
+            \item \verb|\subsubsection{}|
+            \item \verb|\paragraph{}|
+            \item \verb|\subparagraph{}|
+    \end{itemize}  \vspace{2mm}
+              
+    `subsection' headings also appear in the \textbf{navigation bar}
+    
+\end{frame}
+
+
+%%% Document layout commands: part 2                   Document layout commands: part 2
+\section{Layout commands: part 2}
+\begin{frame}[fragile]
+    \frametitle{Document layout commands: part 2}
+    
+    New paragraphs are created in the compiled PDF by adding a \textbf{blank line} 
+    in between the markup document lines or using the \verb|\par| command.  \vspace{3mm} 
+    
+    However, adding more than one blank line in the markup 
+    will not increase the space between paragraphs in the compiled document. Instead, 
+    use the \textbf{\textbackslash{}vspace\{\}} command  \vspace{3mm}
+    
+    The command \textbf{\textbackslash{}hrulefill} creates horizontal lines in your compiled document like this:\par 
+    \hrulefill\par  \vspace{3mm}
+    
+    Use \textbf{\textbackslash{}hline} to create a horizontal line inside the \texttt{\emph{tabular}} environment
+    
+\end{frame}
+
+
+%%%   Lists and adding pauses             Lists and adding pauses         Lists and adding pauses
+\section{Lists and adding pauses}
+
+\begin{frame}[fragile]
+    \frametitle{Lists and adding pauses}
+    
+    There are three main \textbf{list environments}:  \vspace{1mm}
+    
+    %\pause
+    \begin{enumerate}
+        \item<3 -> \texttt{\emph{enumerate}} 
+        \item<4 -> \texttt{\emph{itemize}} 
+        \item<5 -> \texttt{\emph{description}}  
+    \end{enumerate}  
+    \vspace{2mm}
+    
+    \pause
+    Here is the code that created the above (enumerated) list:
+    \begin{Verbatim}
+    \begin{enumerate}
+    \item<3 -> \texttt{\emph{enumerate}} 
+    \item<4 -> \texttt{\emph{itemize}} 
+    \item<5 -> \texttt{\emph{description}} 
+    \end{enumerate}
+    \end{Verbatim}
+    \vspace{2mm}
+    
+    Note the ``\verb|< ->|'' after the \verb|\item| commands. 
+    Numbers inside these angle brackets specify 
+    the order that list items appear. Pauses (like before 'Here is the code...') in a frame are added with \verb|\pause|
+    
+\end{frame}
+        
+
+%%% Text display: part 1                    TEXT DISPLAY: part 1                      TEXT DISPLAY: part 1
+\section{Text display: part 1} 
+
+\begin{frame}[fragile]
+    \frametitle{Text display: part 1}
+    
+    {\Large{Font options}}  \vspace{2mm}
+    
+    \begin{itemize}
+   
+        \item \textit{Italicize text} with either of theses commands: 
+        \begin{itemize}
+            \item \verb|\emph{Italicize text}|
+            \item \verb|\textit{Italicize text}|
+        \end{itemize}  \vspace{2mm}
+            
+        \item Give text a \textbf{bold font} like so: \verb|\textbf{bold font}|  \vspace{2mm}
+        
+        \item Specify font size by wrapping the \textbf{size declaration} in curly braces like so: 
+        \verb|{\size_name{...}}|  \vspace{2mm}
+        
+        \item List of \textbf{font size names}: Huge, huge, LARGE, Large, large, normalsize, 
+              small, footnotesize, scriptsize, tiny.  \vspace{2mm}
+        
+            \begin{itemize}
+                    \item make text {\LARGE{LARGE}} with command: \verb|{\LARGE{LARGE}}|
+                    \item make text {\tiny{tiny}} with command: \verb|{\tiny{tiny}}|
+            \end{itemize}
+    \end{itemize}
+    
+\end{frame}
+
+
+%%% Text display: part 2                     Text display: part 2                  Text display: part 2
+\section{Text display: part 2}
+\begin{frame}[fragile]
+    \frametitle{Text display: part 2}
+    
+    {\Large{Font Styles}}
+    \begin{itemize}
+        \item use command \verb|\textrm{}| for \textrm{roman font}
+        \item use command \verb|\textsf{}| for \textsf{sans serif font}
+        \item use command \verb|\texttt{}| for \texttt{typewriter font}
+        \item use command \verb|\uppercase{}| for \uppercase{upper case text}
+    \end{itemize}  \vspace{4mm}
+    
+    {\Large{Diacritics}}
+    \begin{itemize}
+        \item \verb|\'| for an \textbf{accute accent}, such as in the word: financ\'{e} 
+        \item \verb|\c| for a \textbf{cedilla}, such as in the word: fa\c{c}ade
+        \item \verb|\~| for a \textbf{tilde}, such as over the `n' in the word: pi\~{n}ata
+        \item \verb|\"| for a \textbf{diaeresis}, such as over the `i' in the word: na\"{i}ve
+ 
+    \end{itemize}  \vspace{2mm}
+    
+    Resource: \href{https://en.wikibooks.org/wiki/LaTeX/Special_Characters}{LaTeX Wikibook page} on diacritics 
+    
+\end{frame}
+
+
+%%% Math equations part 1                  Math equations part 1                  Math equations part 1
+\section{Math equations: part 1}
+\begin{frame}[fragile]
+    \frametitle{Math in LaTeX: part 1}
+            
+    Insert \textbf{inline math equations} in 3 ways:
+    \begin{enumerate}
+        \item place the formula between a pair of dollar ``\$'' signs 
+        \item place the formula after a ``\verb|\(|'' and before a ``\verb|\)|''
+        \item use the \texttt{\emph{math}} environment by placing the short formula between the commands: 
+              \verb|\begin{math}| and \verb|\end{math}|
+    \end{enumerate}
+    \vspace{4mm}
+    
+    The \textbf{inline equation} for sample variance is written as \verb|$s^{2} = \frac{\sum(x - \bar{x})^2}{n - 1}$|  
+    \vspace{2mm}
+    and displayed as: $s^{2} = \frac{\sum(x - \bar{x})^2}{n - 1}$  \vspace{4mm}
+ 
+\end{frame}
+
+
+%%% Math equations part 2               Math equations part 2             Math equations part 2
+\section{Math equations: part 2}
+\begin{frame}[fragile]
+    \frametitle{Math in LaTeX: part 2}
+
+    Insert \textbf{block math equations} by placing the formula:
+    \begin{enumerate}
+        \item between a pair of double dollar ``\$\$'' signs
+        \item between a ``\verb|\[|'' and a ``\verb|\]|'' 
+        %between a \verb|\[| and a \verb|\]|  
+        \item inside the \texttt{\emph{displaymath}} or \texttt{\emph{equation}} environments
+            \begin{itemize}
+                \item \texttt{\emph{equation}} adds an equation number on the right edge
+            \end{itemize}
+    \end{enumerate}  \vspace{3mm}
+    
+    The following block equation is \textbf{written} as: 
+    \begin{Verbatim}
+    \[
+    \frac{d}{dx}\left(\int_{0}^{x} f(u)\,du\right)=f(x)
+    \]
+    \end{Verbatim}  
+    \vspace{3mm}
+    
+    ...and is \textbf{printed} in the typeset PDF file as:
+    
+    \[
+    \frac{d}{dx}\left(\int_{0}^{x} f(u)\,du\right)=f(x)
+    \]
+    
+\end{frame}
+
+
+%%% Math equations part 3               Math equations part 3             Math equations part 3
+\section{Math equations: part 3}
+\begin{frame}[fragile]
+    \frametitle{Math in LaTeX: part 3}
+    
+    Here's an example of typesetting a \textbf{block math equation} using the \texttt{\emph{displaymath}} environment.
+    \vspace{2mm}
+    
+    \begin{displaymath}
+    \lim_{x \to a} \frac{f(x) - f(a)}{x - a}
+    \end{displaymath}  \vspace{3mm}
+    
+    %\[
+    %\lim_{x \to a} \frac{f(x) - f(a)}{x - a}
+    %\]
+    
+    The syntax to type this definition of a derivative is:
+    \begin{Verbatim}
+    \begin{displaymath}
+    \lim_{x \to a} \frac{f(x) - f(a)}{x - a}
+    \end{displaymath}
+    \end{Verbatim}
+    
+\end{frame}
+
+
+%%% Math equations part 4               Math equations part 4             Math equations part 4
+\section{Math equations: part 4}
+\begin{frame}[fragile]
+    \frametitle{Math in LaTeX: part 4}
+    
+    {\large List of selected \textbf{math commands}:}
+    
+    \begin{columns}[T]
+        
+        \begin{column}{0.3\textwidth}
+        
+        bold text:  \\
+        \vspace{0.5mm}
+        bold symbol: \\
+        \vspace{0.5mm}
+        `Hat' notation: \\
+        \vspace{0.5mm}
+        `Proportional to': \\
+        \vspace{0.5mm}
+        `Not equal to':  \\
+        \vspace{0.5mm}
+        `If and only if':  \\
+        \vspace{0.5mm}
+        Definite integral:  \\
+        \vspace{1mm}
+        Indef. integral:  \\
+        \vspace{1mm}
+        Summation:  \\
+        \vspace{1mm}
+        Product of terms:  
+        
+        %\item Greek delta: \verb|$\Delta$| $\longrightarrow$ $\Delta$  \\
+
+        \end{column}
+        
+        \begin{column}{0.8\textwidth}
+          \verb|$\mathbf{A}$| $\quad \longrightarrow \quad$ $\mathbf{A}$   \\
+          \vspace{0.5mm}
+          \verb|$\boldsymbol{\alpha}$| $\quad \longrightarrow \quad$ $\boldsymbol{\alpha}$  \\
+          \vspace{0.5mm}
+          \verb|$\widehat{a}$| $\quad \longrightarrow \quad$ $\widehat{a}$  \\
+          \vspace{0.5mm}
+          \verb|$\propto$| $\quad \longrightarrow \quad$ $\propto$ \\
+          \vspace{0.5mm}
+          \verb|$\neq$| or \verb|$\ne$| $\quad \longrightarrow \quad$ $\neq$  \\
+          \vspace{0.5mm}
+          \verb|$\iff$| $\quad \longrightarrow \quad$ $\iff$  \\
+          \vspace{0.5mm}
+          \verb|$\int_{a}^{b}$| $\quad \longrightarrow \quad$ $\int_{a}^{b}$  \\
+          \vspace{1mm}
+          \verb|$\int^{+\infty}_{-\infty}$| $\quad \longrightarrow \quad$  $\int^{+\infty}_{-\infty}$  \\
+          \vspace{1mm}
+          \verb|$\sum_{i=1}^{n}$| $\quad \longrightarrow \quad$ $\sum_{i=1}^{n}$  \\
+          \vspace{1mm}
+          \verb|$\prod_{i=1}^{n}$| $\quad \longrightarrow \quad$ $\prod_{i=1}^{n}$
+    
+        \end{column}
+      
+      \end{columns}
+      
+      \vspace{4mm}
+      
+      See Appendix B (page 165) of \citetitle{Gratzer2014} by \citeauthor{Gratzer2014} (\citeyear{Gratzer2014}) 
+      for math symbol tables
+
+\end{frame}
+
+ 
+%%%    FOOTNOTES                  FOOTNOTES              FOOTNOTES                  FOOTNOTES
+\section{Footnotes}
+
+\begin{frame}[fragile]
+    \frametitle{Footnotes}
+    
+    \LaTeX{} \textbf{footnotes} are inserted using the \verb|\footnote{}| command at the place in the markup text where you want the footnote number to appear. \vspace{4mm}
+    
+    Here's an example: Footnotes are discussed on page 225 of the Gandrud textbook.\footnote{"Reproducible Research with R and RStudio". Christopher Gandrud. CRC Press, 2nd ed. 2015.} The footnote's text (displayed at the bottom of the slide) is the argument for this command.
+
+\end{frame}
+
+
+%% Cross-references (non-knitted image)             CROSS-REFERENCES              CROSS-REFERENCES
+\section{Cross-referencing an image: part 1}
+\begin{frame}[fragile]
+    \frametitle{Cross-referencing an image: part 1}
+
+    Create a figure \textbf{cross-reference} with \verb|\label{}| and reference its number and page with 
+    \verb|\ref{}| and \verb|\pageref{}|, respectively  \vspace{2mm}
+    
+    Insert a \textbf{non-knitted image} like Figure \ref{walrus} with template code 
+    \verb|\includegraphics[options]{file path}|. 
+    From within the \texttt{\emph{figure}} environment, a title is given with command \verb|\caption{}|
+    
+    \kern-1em
+
+    \begin{figure}
+
+      \begin{center}
+      \caption{Walrus on an ice floe}
+      \label{walrus}
+      \includegraphics[width=2.25in,keepaspectratio=true]{Walrus.jpg}
+      \end{center}
+      {\footnotesize{Source: \cite{walrus_image}}}
+  
+    \end{figure}
+\end{frame}
+
+
+%% Cross-references (non-knitted image)             CROSS-REFERENCES              CROSS-REFERENCES
+\section{Cross-referencing an image: part 2}
+\begin{frame}[fragile]
+    \frametitle{Cross-referencing an image: part 2}
+    
+    The walrus image on slide \pageref{walrus} was inserted with the code:  \vspace{2mm}
+    
+    \begin{Verbatim}
+    \begin{figure}
+        \begin{center}
+            \caption{Walrus on an ice floe}
+            \label{walrus}
+            \includegraphics[width=2in]{Walrus.jpg}
+        \end{center}
+        {\footnotesize{Source: \cite{walrus_image}}}
+    \end{figure}
+    \end{Verbatim}  
+    \vspace{4mm}
+    
+    Note 1: the \verb|\cite{}| command is introduced on slide \pageref{BibTeX} when discussing 
+    BibTeX and .bib file entries  \vspace{2mm}
+    
+    Note 2: tables (within \texttt{\emph{table}} enviro.) and document locations (eg, Beamer slides) can also be 
+    \textbf{cross-referenced} with \verb|\label{}|
+    
+\end{frame}
+
+
+%% PLACING AN IMAGE             PLACING AN IMAGE             PLACING AN IMAGE
+\section{Inserting a non-knitted image}
+\begin{frame}[fragile]
+    \frametitle{Inserting a non-knitted image}
+    
+    Placing an image within a \texttt{\emph{figure}} environment is not necessary and is less common for the 
+    \textbf{beamer} class than for an \textbf{article} or \textbf{report}. The following image is inserted in the             \texttt{\emph{frame}} environment with two commands: \verb|\centering| and \verb|\includegraphics{}|  \vspace{1mm}
+     
+     %\begin{figure}[t!]
+     
+      \centering
+      \includegraphics[width=3.5in,keepaspectratio=true]{wedding.jpg}
+
+\end{frame}
+    
+
+%% LINKING COMMANDS: \url{}, \href{}            LINKING COMMANDS: \url{}, \href{}
+\section{LaTeX commands for links}
+\begin{frame}[fragile]
+    \frametitle{LaTeX commands for links}
+    
+    Use command \textbf{\textbackslash{}url\{http...\}} to include a clickable hyperlink for a webpage. 
+    The lone argument is the URL. 
+    For example, the GitHub page for \emph{Reproducible Research with R and RStudio} is here: 
+    \url(https://github.com/christophergandrud/Rep-Res-Examples/)
+    \vspace{5mm}
+    
+    Use command \textbf{\textbackslash{}href\{http...\}\{some text\}} for text to be a hyperlink.
+    The Netherlands Tex users group has collated a 
+    \textbf{\href{http://www.ntg.nl/doc/biemesderfer/ltxcrib.pdf}{comprehensive list}} of LaTeX commands.
+    If you hover over `comprehensive list' you will see the URL of the link
+    
+\end{frame}
+
+
+%%%   Inline R code syntax          INLINE R code syntax          INLINE R code syntax
+\section{R inline code}
+\begin{frame}[fragile]
+    \frametitle{R inline code}
+
+    Insert \textbf{inline R code} in a .Rnw file with the \textbf{\textbackslash{}Sexpr\{\}} command: 
+    \vspace{4mm}
+    
+<<include=FALSE>>=
+R_packages <- c("ggplot2","knitr","xtable","texreg")
+lapply(R_packages, library, character.only=TRUE)
+# create a BibTeX file for R package citations
+knitr::write_bib(R_packages, file = "Packages.bib")
+@    
+    
+    For example, using the `mpg' dataset loaded with the \emph{ggplot2} package, the average fuel economy for city     driving among 4-cylinder cars is \Sexpr{round(mean(mpg[mpg$cyl==4,]$cty),digits=2)} miles per gallon.  \vspace{4mm}
+    
+    The R code passed as an argument to \textbf{\textbackslash{}Sexpr\{\}} that computes and displays this 
+    average fuel economy is:  \vspace{1.5mm}
+    
+    \verb|round(mean(mpg[mpg$cyl==4,]$cty),digits=2)|
+
+%$\verb+\Sexpr{round(mean(mpg[mpg$cyl==4,]$cty),digits=2)}+
+\end{frame}
+
+
+%%%    R CODE CHUNKS            R CODE CHUNKS            R CODE CHUNKS                R CODE CHUNKS
+\section{R code chunks}
+\begin{frame}[fragile]
+    \frametitle{R code chunks}
+
+    Insert \textbf{R code blocks}, called \textbf{chunks}, in a .Rnw file by placing the code between 
+    ``\verb|<< >>=|'' and ``\verb|@|''. Code chunk labels and options are placed within the 
+    double angle brackets like this: \vspace{2mm} 
+    
+    \verb|<<random_norm, echo=2:4, collapse=TRUE>>=|
+    
+    \kern-1em
+    %\! \!
+    
+<<random_num, echo=2:4, collapse=TRUE>>=
+knitr::opts_chunk$set(fig.align='center', fig.path='Ch11_figures/')
+sample <- rnorm(100)
+round(mean(sample),digits=3)
+round(sd(sample),digits=3)
+@
+    \kern-1em
+    $@$  \vspace{2mm}
+    
+    When inserting code chunks in Beamer frames, make sure to specify the 'fragile' option like so: 
+    \verb|\begin{frame}[fragile]|
+\end{frame}
+
+
+%%%    XTABLE R package                 XTABLE R package                  XTABLE R package
+\section{Knitting a table with xtable}
+\begin{frame}[fragile]
+    \frametitle{Knitting a table with xtable}
+    
+    Use R package \emph{xtable} to create \textbf{Table \ref{xtable}} of regression coeff. 
+    using `Cars93' dataset that comes loaded with \emph{MASS} package. \vspace{2mm}
+    
+    Each observation is a car on sale in the U.S. in 1993. Fit a linear reg. model where the dependent varible is car price and the regressors are city mpg, drive train (3 levels), and engine size.
+
+<<table, echo=3:4, results='asis', size='footnotesize'>>=
+library(xtable)
+library(MASS)
+model <- lm(Price ~ MPG.city + DriveTrain + EngineSize, 
+            data=Cars93)
+print(xtable(model, caption="Linear regression results",
+      label='xtable', digits=2), size='small')
+@
+
+%\scalebox{0.75}[0.5]
+
+\end{frame}
+
+
+%%%  TEXREG R package 1                 TEXREG R package 1              TEXREG R package 1
+\section{Knitting a table with texreg: part 1}
+
+\begin{frame}[fragile]
+    \frametitle{Knitting a table with texreg: part 1}
+    
+    \textbf{Table \ref{texreg}} estimates pertain to modeling U.S. state populations in 1975. The regressors are 
+    Frost (mean days with min temp below freezing), Area (sq miles of land), and Income (per capita) 
+    %Frost (mean # of days with min temp below freezing), %Area (land area in square miles), 
+    %and Income (per capita income)
+
+    %\begin{table}[!htb]
+    
+<<texreg, echo=FALSE, results='asis', message=FALSE>>=
+# 'state.x77' is a matrix preloaded with R
+state_df <- data.frame(state.x77)
+M1 <- lm(Population ~ Frost, data=state_df)
+M2 <- lm(Population ~ Frost + Area, data=state_df)
+M3 <- lm(Population ~ Frost + Area + Income, data=state_df)
+texreg(list(M1,M2,M3),caption='\\emph{texreg} table of nested models',scalebox=0.85,label='texreg')
+@
+  %\end{table}
+
+\end{frame}
+
+
+%%%  TEXREG R package 2                 TEXREG R package 2              TEXREG R package 2
+\section{Knitting a table with texreg: part 2}
+
+\begin{frame}[fragile]
+    \frametitle{Knitting a table with texreg: part 2}
+    
+    The \textbf{code chunk} that created the \emph{texreg} Table \ref{texreg} is shown below.
+    Important \textbf{options} for the chunk are:
+    \begin{itemize}
+        \item results = 'asis'
+        \item message = FALSE
+    \end{itemize}
+    \kern-1em
+
+<<texreg2, echo=TRUE, eval=FALSE, message=FALSE, results='asis', out.width='6in', size="scriptsize">>=
+state_df <- data.frame(state.x77)
+M1 = lm(Population ~ Frost, data=state_df)
+M2 = lm(Population ~ Frost + Area, data=state_df)
+M3 = lm(Population ~ Frost + Area + Income, data=state_df)
+texreg(list(M1,M2,M3),
+       caption='\\emph{texreg} table of nested models',
+       scalebox=0.85, label='texreg')
+@
+  
+  The texreg() `\textbf{scalebox}` value shrinks the table text by 15\%.  \vspace{2mm}
+  
+  The `\textbf{label}` value is the text to use as the argument for the \verb|\ref{}| command to cite the table's number
+  
+\end{frame}
+
+
+%%%    DEFAULT R GRAPHIC                DEFAULT R GRAPHIC                DEFAULT R GRAPHIC
+\section{Knitting a figure with base R}
+\begin{frame}[fragile]
+    \frametitle{Knitting a figure with base R}  \vspace{1mm}
+
+    This chunk inserts default R box-and-whisker plots (Figure \ref{boxplot})  \vspace{1.5mm}
+
+    \verb|<<boxplots, out.width='3in', out.height='2in'>>=| \\
+    \verb|boxplot(mpg ~ cyl, data=mtcars, main="")| \\
+    \verb|@|
+    
+    %\textbf{Boxplots:}  fuel economy by cylinder number.
+    \begin{figure}    %[ht]
+    
+<<boxplots, echo=FALSE, out.height='2in', out.width='3in'>>=
+par(mai=c(0.8,1.093,0,0.56))
+boxplot(mpg ~ cyl, data=mtcars, xlab="cylinders", ylab="miles per gallon")
+@
+      \caption{Fuel economy by cylinder number}
+      \label{boxplot}
+    \end{figure}
+
+\end{frame}
+
+
+%%%   GGPLOT2 graphic             GGPLOT2 graphic                    GGPLOT2 graphic
+\section{Knitting a figure with ggplot2}
+\begin{frame}[fragile]
+    \frametitle{Knitting a figure with ggplot2}  \vspace{1mm}
+    
+    Knit and scale a scatterplot with fitted loess curve (Figure \ref{carplot})  \vspace{1mm}
+    
+    \verb|<<scatter, out.width='2.4in', out.height='1.8in'>>=|
+    \verb|ggplot(data=mpg, aes(x = displ, y=hwy)) +|  \\
+    \verb|       geom_point() + geom_smooth(span=0.7)|  \\
+    \verb|@|
+    
+    %\kern-1em
+    \! \! \!
+    \begin{figure}
+<<scatter, echo=FALSE, out.height='1.8in', out.width='2.4in'>>=
+ggplot(data=mpg, aes(x = displ, y=hwy)) + 
+       geom_point() + geom_smooth(span=0.7) + xlab("engine displacement (L)") + ylab("highway mpg") + 
+       theme(text = element_text(size=24))
+@
+    \caption{Scatterplot of engine size (x-axis) vs. mpg (y-axis)}
+    \label{carplot}
+
+  \end{figure}
+\end{frame}
+
+
+%%% BibTeX citations: part 1                   BibTeX citations: part 1             BibTeX citations: part 1
+\section{BibTeX citations: part 1}
+%\label{BibTeX}
+\begin{frame}[fragile]
+    \frametitle{BibTeX citations: part 1}
+    \label{BibTeX}
+    
+    \textbf{BibTeX} is a tool for creating databases of citation information. \vspace{4mm}
+    
+    BibTeX bibliographies are stored in \textbf{.bib files}, which are plain-text files that can be created with any text       editor. In the preamble, type \verb|\addbibresource{file_name.bib}| to access the BibTeX file whose entries you plan on     citing.    \vspace{4mm}
+    
+      Use \textbf{\textbackslash{}cite} (and other commands\footnote{$\backslash$citetitle\{\}, 
+                                         $\backslash$citeauthor\{\}, $\backslash$citeyear\{\}})
+      to embed citations in the compiled document. The argument to this command is the unique \textbf{citation key} defined       in a .bib file entry (after the \verb|@|).  \vspace{4mm}
+      
+      % (and other commands\footnote{\verb|\citetitle{}|, \verb|\citeauthor{}|, \verb|\citeyear{}|}
+      
+      References utilized in this document include a \emph{ggplot2} article (\cite{Wickham2011})
+      and \LaTeX{} book (\cite{Gratzer2014}), both listed in the \textbf{Bibliography} slide by using
+      \verb|\printbibliography|
+    
+\end{frame}
+
+
+%%% BibTeX citations: part 2                BibTeX citations: part 2            BibTeX citations: part 2
+\section{BibTeX citations: part 2}
+\begin{frame}[fragile]
+    \frametitle{BibTeX citations: part 2}
+    
+   Here is a \textbf{BibTeX entry} written in a .bib file, which can be made accessible via the preamble commands 
+   \textbf{\textbackslash{}addbibresource\{\}} or \verb|\bibliography{}|, where the argument is the .bib file
+    
+    \begin{Verbatim}
+    @book{Gandrud2015,
+    title={Reproducible Research with R and RStudio},
+    author={Gandrud, Christopher},
+    publisher={CRC Press},
+    year={2015}
+    }
+    \end{Verbatim}
+    \vspace{1mm}
+    
+    \textbf{\textbackslash{}cite\{Gandrud2015\}} prints this citation: \hspace{0.20mm} \cite{Gandrud2015}  \\
+    because `style=authoryear' was specified when loading \textsl{biblatex}  \vspace{2mm}
+    
+    Other citation 'style' options for the \textsl{biblatex} package include 
+    `numeric', `authortitle', and `verbose'. 
+    
+\end{frame}
+
+
+%%% BibTeX citations: part 3                BibTeX citations: part 3            BibTeX citations: part 3
+\section{BibTeX citations: part 3}
+\begin{frame}[fragile]
+    \frametitle{BibTeX citations: part 3}
+   
+   A separate \textbf{BibTeX} (.bib) file was created for citing the R packages used in this .Rnw file 
+   by including the following commands in a \textbf{code chunk} from an earlier frame:
+   
+<<eval=FALSE, echo=TRUE, collapse=TRUE>>=
+# vector of R packages used in knittable document
+R_packages <- c("ggplot2","knitr","xtable","texreg")
+
+# load R packages into memory
+lapply(R_packages, library, character.only=TRUE)
+
+# create a BibTeX file for R package citations
+knitr::write_bib(R_packages, file = "Packages.bib")
+@   
+
+    \vspace{2mm}
+    This \textbf{BibTeX} file is created in the folder that the .Rnw resides in.
+    
+\end{frame}
+
+
+%%% PRINT BIBLIOGRAPHY      PRINT BIBLIOGRAPHY        PRINT BIBLIOGRAPHY
+\section{Bibliography}
+\begin{frame}
+    \frametitle{Bibliography}
+    
+    \printbibliography
+\end{frame}
+
+
+%% ideas for other slides: xtable, texreg, butterfly plot showing citations, footnotes and cross-references
+
+
+
+\end{document}

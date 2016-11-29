@@ -1,0 +1,188 @@
+---
+title: "MathJax2"
+author: "C Degnin"
+date: "September 14, 2016"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, cache=FALSE)
+```
+
+
+Markdown cannot format mathematical equations, 
+but requires the add on **MathJax JavaScript engine**
+ 
+
+ 
+Gandrud's suggested code didn't work:
+``` 
+\\[ s^{2} = \frac{\sum(x- \bar{x})^2}{n-1}
+\\]
+ 
+\(s^{2} = \frac{\sum(x-\bar{x})^2{n-1}\)
+```
+
+\\[ s^{2} = \frac{\sum(x- \bar{x})^2}{n-1}
+\\]
+ 
+\(s^{2} = \frac{\sum(x-\bar{x})^2{n-1}\)
+ 
+
+
+Markdown Code: MathJax
+========================================================
+
+But code from the online tool did work:
+ 
+``` 
+$\ s^{2} = \frac{\sum(x-\bar{x})^2}{n-1}$
+```
+
+
+$\ s^{2} = \frac{\sum(x-\bar{x})^2}{n-1}$
+
+Check out this [online tutorial](http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)
+ 
+ This code uses "dollar sign backslash SPACE" `($\ )` to specify MathJax coding
+ 
+
+Centering you equations
+========================================================
+
+Insertion of two dollar signs `($$)` centers your equations
+ 
+``` 
+ Other examples, off set and centered - notice double dollar signs:
+  $\ \sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}$
+  
+  $$\ \sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}$$
+```
+
+  $\ \sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}$
+  
+  $$\ \sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}$$
+  
+  
+More Interesting Codes:
+===============================================
+  
+```
+### Greek Letters:
+  
+ $\ \alpha$      $\ \beta$       $\ \gamma$      $\ \chi$
+ $\ \Delta$      $\ \Sigma$      $\ \Omega$
+ 
+### superscripts (^) and subscripts (_)
+
+$\ x_i^2$       $\ log_2 x$
+
+```
+  
+#### Greek Letters:  (not all capitalized Greek letters available)
+  
+$\ \alpha$      $\ \beta$       $\ \gamma$      $\ \chi$
+ 
+$\ \Delta$      $\ \Sigma$      $\ \Omega$
+
+  
+#### superscripts `(^)` and subscripts `(_)`
+  
+$\ x_i^2$        $\ log_2 x$
+ 
+
+
+Grouping with Brackets
+===============================================
+### Use brackets {...} to delimit a formula containing a superscript or subscript.  Notice the difference the grouping makes:
+
+```
+$\ {x^y}^z$
+$\ x^{y^z}$ 
+$\ x_i^2$
+$\ x_{i^2}$
+```
+  
+$\ {x^y}^z$         $\ x^{y^z}$ 
+$\ x_i^2$           $\ x_{i^2}$
+
+  
+### Scaling:
+```
+Add the scaling code \left(...\right) to make automatic size adjustments
+$\ (\frac{\sqrt x}{y^3})$
+$\ \left(\frac{\sqrt x}{y^3}\right)$
+```
+
+$\ (\frac{\sqrt x}{y^3})$
+$\ \left(\frac{\sqrt x}{y^3}\right)$
+
+Sums and Integrals
+===============================================
+Subscript (_) designates the lower limit; superscript (^) designates upper limit:
+ 
+``` 
+$\ \sum_1^n$          $\ \sum_{i=0}^\infty i^2$
+```
+
+$\ \sum_1^n$          $\ \sum_{i=0}^\infty i^2$
+
+```
+ Other notable symbols:
+ 
+- $\prod$           $\infty$ 
+- $\bigcup$         $\bigcap$
+- $\int$            $\iint$
+
+``` 
+
+$\prod$              $\infty$
+$\bigcup$            $\bigcap$
+$\int$               $\iint$
+
+
+Radical Signs
+=====================================
+Use 'sqrt' code to adjust the size of its argument
+
+``` 
+note the change in size of the square root function based on the code
+1. $\ sqrt{x^3}$
+2. $\ sqrt[3]{\frac xy}$
+ and for complicated expressions use  brackets
+3. $\ {...}^{1/2}$
+```
+
+1. $\ \sqrt{x^3}$
+2. $\ \sqrt[3]{\frac xy}$
+3. $\ {...}^{1/2}$
+
+
+You can also change fonts!
+====================================
+
+```
+$\ \mathbb or $\ Bbb for 'Blackboard bold"
+$\ \mathbf for boldface  
+$\ \mathtt for 'typewritter' font
+$\ \mathrm for roman font
+$\ \mathsf for sans-serif
+$\ \mathcal for 'caligraphy' 
+$\ \mathscr for script letter: 
+$\ \mathfrak for "Fraktur" (old German style)
+```
+
+$\ \mathbb {ABCDEFG}$   $\ \mathbf {ABCDEFG}$   $\ \mathtt {ABCDEFG}$   $\ \mathrm {ABCDEFG}$   $\ \mathsf {ABCDEFG}$   $\ \mathcal {ABCDEFG}$   $\ \mathscr {ABCDEFG}$   $\ \mathfrak {ABCDEFG}$
+
+
+```
+Some special functions such as "lim" "sin" "max" and "ln" are normally set in roman font instead of italic.  Use \lim  \sin to make these (roman):
+
+$\ \sin x$   (roman)
+vs  
+$\ sin x$  (italics)
+```
+$\ \sin x$   (roman)  vs
+ 
+$\ sin x$    (italics) 
+
