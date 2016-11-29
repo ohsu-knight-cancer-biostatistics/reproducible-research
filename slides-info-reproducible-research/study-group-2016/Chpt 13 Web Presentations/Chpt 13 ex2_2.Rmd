@@ -1,0 +1,295 @@
+---
+title: "Chpt_13"
+author: "C Degnin"
+date: "September 14, 2016"
+output: slidy_presentation
+---
+
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE, message=FALSE, warning=TRUE)
+```
+##Formating for Presentations in Markdown:
+You can regulated the size of your font in Markdown using 'headings' marks,
+but in *HTML presentations* a single hashtage indicates 'new slide':
+```
+#     A level one heading (not shown)
+##    A level two heading
+###   A level three heading
+####  A level four heading
+```
+
+## A level two heading
+### A level three heading
+#### A level four heading
+
+
+Similarly, three of more 'equals' (level one heading) or 'dashes' (level two heading) changes your heading in Markdown; 'equals' specifies 'new slide' in *HTML presentations*
+```
+A level one heading (not shown)
+===================
+
+A level two heading 
+--------------
+```
+
+A level two heading 
+--------------
+
+
+
+Creating new paragraphs
+===============================================
+
+## To create a new paragraph: separate text with a blank line:
+
+```
+This is the first paragraph
+
+This is the second paragraph.
+This is **still** the second paragraph
+
+This is the third paragraph.   Adding two spaces SHOULD move this to the next line down - but it didn't work.
+```
+This is the first paragraph
+
+This is the second paragraph.
+This is **still** the second paragraph
+
+This is the third paragraph.   Adding two spaces SHOULD move this to the next line down - but it didn'work.
+
+
+
+Escape Characters and Lists
+======================================================
+```
+use the backslash (\) as an escape character (to use \*, #, \). 
+Although not required in rmarkdown, use &amp for Ampersand (&) and &lt for less-than (<) in HTML. 
+```
+
+```
+ For lists use one dash or astericks (items)
+ 
+ * Item one
+ * Item two
+ * Item three
+ 
+ or numbers with periods  (ordered)
+ 
+ 1. Item one
+ 2. Item two
+ 3. Item three
+ 
+ Note:  The list must be separated from the rest of the code by a blank line.
+```
+use one dash or astericks 
+ 
+ * Item one
+ * Item two
+ * Item three
+ 
+ or numbers with periods
+ 
+ 1. Item one
+ 2. Item two
+ 3. Item three
+
+ 
+Other symbols and text options
+=======================================================
+```
+*Use the astricks to italize words*.
+Use **TWO astricks** to bold words 
+(this doesn't work when adjacent to an italicized text)
+```
+
+*Use the astricks to italize words*.
+Use **TWO astricks** to bold words (this doesn't work adjacent to an italicized text)
+
+## To create **hyperlinks** 
+
+```
+use  [LINK_TEX](URL) syntax
+For example:
+[motion chart](http://127.0.0.1:21393/custom/googleVis/MotionChartID2a6c1ec73d30.html) 
+```
+
+use [LINK_TEX](URL) syntax: [motion chart](http://127.0.0.1:18646/custom/googleVis/MotionChartID11cc19815c5e.html) 
+(Note this works best in browser mode) 
+
+
+Overview of googleVis
+==============================
+[googleVis](https://code.google.com/archive/p/google-motion-charts-with-r/) is a package for R and provides an interface between R and the [Google Chart Tools](https://developers.google.com/chart/)
+
+The functions of the package allow users to visualize data with the Google Chart Tools without uploading their data to Google
+
+The output of googleVis functions is html code that contains the data and references to JavaScript functions hosted by Google
+
+To view the output a browser with an internet connection is required, the actual chart is rendered in the browser; some charts require Flash
+
+See also: Using the Google Visualisation API with R, [The R Journal, 3(2):40-44, December 2011](https://journal.r-project.org/archive/2011-2/RJournal_2011-2_Gesmann+de~Castillo.pdf) and googleVis [package vignette](https://cran.r-project.org/web/packages/googleVis/vignettes/googleVis.pdf)
+
+
+#Introduction to Google Chart Tools
+
+Google Chart Tools provide a way to visualize data on web sites
+
+The API makes it easy to create interactive charts
+
+It uses JavaScript and DataTable / JSON as input
+
+Output is either HTML5/SVG or Flash
+
+Browser with internet connection required to display chart
+
+You can review the Google [Terms of Service here](https://developers.google.com/terms/)
+
+
+#Structure of Google Charts
+The chart code has five generic parts:
+
+1.	References to Google's AJAX and Visualisation API
+
+2.	Data to visualize as a DataTable
+
+3.	Instance call to create the chart
+
+4.	Method call to draw the chart including options
+
+5.	HTML `<div>` element to add the chart to the page
+
+# How is this done?
+.	Transform data into JSON object 
+.	Wrap some HTML and JavaScript around it 
+.	Thus, googleVis started life in August 2010
+.	Motion chart example:
+
+``` {r , echo=TRUE, include = TRUE}
+suppressPackageStartupMessages(library(googleVis))
+plot(gvisMotionChart(Fruits, "Fruit", "Year", options = list(width = 600, height = 400)))
+```
+
+[motion chart](http://127.0.0.1:21393/custom/googleVis/MotionChartID2a6cb394b90.html)
+
+[TED presentation](http://decastillo.github.io/googleVis_Tutorial/#5)
+
+
+
+
+Creating an interactive map - present from the web
+============================================
+
+```{r LoadPackages, include=TRUE}
+# Load required packages
+library(devtools, googleVis)
+```
+
+We can use the [googleVis](http://code.google.com/p/google-motion-charts-with-r/) 
+package to create interactive JavaScript tables, charts, and maps. Here is an 
+example of how to create a map with **googleVis**'s `gvisGeoChart` function. 
+
+First download some data from [GitHub](http://bit.ly/V0ldsf). See chapters 
+6 and 7 for details about this data as well as the 
+[variable description page](https://github.com/christophergandrud/Rep-Res-Examples/blob/master/DataGather_Merge/MainData_VariableDescriptions.md).
+
+Create geo map of global fertilizer consumption for 2003
+
+The data is loaded from [GitHub](http://bit.ly/V0ldsf)
+
+The data gathering process used to create this data set
+is completely reproducible. For more information see:
+http://bit.ly/YnMKBG
+
+-----------
+
+## Fertilizer Consumption (kilograms per hectare of arable land) in 2003
+### Data from [World Bank](http://data.worldbank.org/indicator/AG.CON.FERT.ZS)
+
+
+```{r CreategvisGeoChart, echo=FALSE, message=FALSE, results='asis', include = TRUE}
+
+source_url("http://bit.ly/VNnZxS")
+```
+
+-----------
+
+
+
+
+ 
+Between the steps - creating the map
+=============================
+
+If you need to install packages inside knitr statement 
+**you must include code for cran mirror:**
+
+install.packages("devtools", repos = 'http://cran.us.r-project.org')
+ 
+
+```{r}
+library(devtools)
+library(googleVis)
+library(repmis)
+```
+
+
+Load data from GitHub (http://bit.ly/V0ldsf)
+The data gathering process used to create this data set
+is completely reproducible. For more information see:
+http://bit.ly/YnMKBG
+
+```{r}
+MainData <- source_data("http://bit.ly/V0ldsf")
+
+```
+
+Subset MainData so that it only includes 2003
+
+```{r subdata1}
+SubData <- subset(MainData, year == 2003)
+```
+
+Remove values of FertilizerConsumption less than 0.1
+
+```{r subdata2}
+SubData <- subset(SubData, FertilizerConsumption > 0.1)
+```
+
+# Completing the dataset:
+Find the natural logarithm of FertilizerConsumption.
+Round the results to one decimal digit.
+```{r subdata3}
+SubData$LogConsumption <- round(log(SubData$FertilizerConsumption),
+                                digits = 1)
+
+```
+
+
+
+Make a map of Fertilizer Consumption
+
+```{r map }
+FCMap <- gvisGeoChart(data = SubData,
+                      locationvar = "iso2c",
+                      colorvar = "LogConsumption",
+                      options = list(
+                          colors = "['#ECE7F2', '#A6BDDB', '#2B8CBE']",
+                          width = "780px",
+                          height = "500px"))
+
+```
+
+
+
+# Print FCMap
+```{r print, results='asis'}
+# Print FCMap
+print(FCMap, tag = "chart")
+```
+
+
+
+
+
+ 
